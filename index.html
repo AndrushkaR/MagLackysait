@@ -26,6 +26,12 @@
     .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#161b22; border-top:1px solid #30363d; display:flex; justify-content:space-around; padding:10px 0; font-size:12px; }
     .nav-item { text-align:center; cursor:pointer; color:#8b949e; }
     .nav-item.active { color:#FFD700; font-weight:bold; }
+    #settingsModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
+    .modal-content { background:#1f2937; padding:28px; border-radius:16px; width:90%; max-width:360px; text-align:center; border:1px solid #FFD70040; }
+    .modal-content h3 { color:#FFD700; margin:0 0 20px; font-size:22px; }
+    .lang-btn { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; min-width:120px; }
+    .lang-btn.active { background:#FFD700; color:black; font-weight:bold; }
+    .close-btn { margin-top:20px; background:#FF5555; color:white; border:none; padding:12px 32px; border-radius:12px; cursor:pointer; font-size:16px; }
   </style>
 </head>
 <body>
@@ -75,6 +81,18 @@
     <div class="nav-item" onclick="window.location.href='rewards.html'">Награды</div>
   </div>
 
+  <!-- Модалка настроек -->
+  <div id="settingsModal">
+    <div class="modal-content">
+      <h3>Настройки</h3>
+      <p>Выберите язык:</p>
+      <button class="lang-btn" onclick="window.location.href='english.html'">English</button>
+      <button class="lang-btn active" onclick="closeSettings()">Русский</button>
+      <br><br>
+      <button class="close-btn" onclick="closeSettings()">Закрыть</button>
+    </div>
+  </div>
+
   <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
@@ -86,6 +104,14 @@
     } else {
       const user = tg.initDataUnsafe?.user || {};
       document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/52/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
+    }
+
+    function openSettings() {
+      document.getElementById('settingsModal').style.display = 'flex';
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
     }
   </script>
 </body>
