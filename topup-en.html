@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuckyChainss – Top Up Balance</title>
+  <style>
+    /* Тот же CSS, что и в русской версии — скопируй полностью из предыдущего кода */
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="back-btn" onclick="history.back()">←</div>
+    <div class="title">Top Up Balance</div>
+    <div></div>
+  </div>
+
+  <div class="balance-section">
+    <div class="balance-info">
+      <div class="balance-icon">💎</div>
+      <div>
+        <div>Your balance</div>
+        <div class="balance-value">0.000</div>
+      </div>
+    </div>
+    <button class="topup-btn">Top up</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="openTab('ton')">TON</button>
+    <button class="tab-btn" onclick="openTab('crypto')">Crypto Bot</button>
+    <button class="tab-btn" onclick="openTab('gifts')">Gifts</button>
+  </div>
+
+  <div id="ton" class="tab-content active">
+    <div style="padding:20px; text-align:center;">
+      <p>Amount (minimum 0.1 TON)</p>
+      <input type="number" class="amount-input" placeholder="Enter amount..." min="0.1" step="0.1">
+      <div class="quick-amounts">
+        <button class="quick-btn" onclick="setAmount(1)">+1 TON</button>
+        <button class="quick-btn" onclick="setAmount(10)">+10 TON</button>
+        <button class="quick-btn" onclick="setAmount(100)">+100 TON</button>
+      </div>
+      <button class="main-topup-btn">Top Up</button>
+    </div>
+  </div>
+
+  <div id="crypto" class="tab-content">
+    <div style="text-align:center; padding:60px 16px; color:#8b949e;">
+      Top up via Crypto Bot<br>Coming soon
+    </div>
+  </div>
+
+  <div id="gifts" class="tab-content">
+    <div class="gift-instruction">
+      <h3 style="text-align:center; color:#a78bfa; margin-bottom:20px;">Top up with Gifts</h3>
+      <p style="text-align:center; margin-bottom:24px;">Send gifts to our bot, and they will appear in your inventory</p>
+
+      <div class="step">
+        <span class="step-number">1</span>
+        Open the gifts bot<br>
+        Click the button below to open @giftbackpack bot
+      </div>
+
+      <div class="step">
+        <span class="step-number">2</span>
+        Send a gift<br>
+        Send the gift directly to the bot.
+      </div>
+
+      <div class="step">
+        <span class="step-number">3</span>
+        Gift added to inventory<br>
+        Your gift will appear in inventory within a few seconds. Then you can quickly sell it for TON balance!
+      </div>
+
+      <button class="open-bot-btn">Open @giftbackpack</button>
+
+      <div style="margin-top:20px; color:#a78bfa;">
+        <p>After sending gifts:</p>
+        <p>Check <strong>Inventory</strong> to quickly sell for TON balance.<br>Need help? Contact @epic_gift_support</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='inventory-en.html'">Inventory</div>
+    <div class="nav-item" onclick="window.location.href='invite-en.html'">Invite</div>
+    <div class="nav-item" onclick="window.location.href='english.html'">Home</div>
+    <div class="nav-item" onclick="window.location.href='rating-en.html'">Rating</div>
+    <div class="nav-item active" onclick="window.location.href='rewards-en.html'">Rewards</div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    function openTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`button[onclick="openTab('${tabId}')"]`).classList.add('active');
+    }
+
+    function setAmount(value) {
+      document.querySelector('.amount-input').value = value;
+    }
+
+    document.querySelector('.open-bot-btn').addEventListener('click', () => {
+      tg.openTelegramLink('https://t.me/giftbackpack');
+    });
+  </script>
+</body>
+</html>
