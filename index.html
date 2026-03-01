@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TON Казик</title>
+  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0d1117; color: white; text-align: center; padding: 30px; margin: 0; }
+    h1 { color: #00ff88; }
+    button { padding: 15px 40px; font-size: 20px; margin: 15px; background: #00ff88; color: black; border: none; border-radius: 12px; cursor: pointer; }
+    button:hover { background: #00cc66; }
+    #status { font-size: 18px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Привет! Это твой TON-казик</h1>
+  <button id="connect">Подключить кошелёк</button>
+  <p id="status">Статус: ждём подключения...</p>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand(); // растягивает на весь экран
+
+    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: 'https://ton-kazik-12345.netlify.app/tonconnect-manifest.json' // потом замени на свою ссылку
+    });
+
+    document.getElementById('connect').onclick = async () => {
+      try {
+        await tonConnectUI.connectWallet();
+        document.getElementById('status').innerText = 'Кошелёк подключён! Баланс: ждём...';
+        // тут потом добавим баланс
+      } catch (e) {
+        document.getElementById('status').innerText = 'Ошибка: ' + e.message;
+      }
+    };
+  </script>
+</body>
+</html>
