@@ -93,26 +93,56 @@
     </div>
   </div>
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  tg.expand();
 
-    const savedAvatar = localStorage.getItem('selectedAvatar');
-    if (savedAvatar) {
-      document.getElementById('userAvatar').src = savedAvatar;
-    } else {
-      const user = tg.initDataUnsafe?.user || {};
-      document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/52/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
-    }
+  const avatarElement = document.getElementById('userAvatar');
 
-    function openSettings() {
-      document.getElementById('settingsModal').style.display = 'flex';
-    }
+  // Список доступных аватарок
+  const defaultAvatars = [
+    'avatars/avatar1.png',
+    'avatars/avatar2.png',
+    'avatars/avatar3.png',
+    'avatars/avatar4.png',
+    'avatars/avatar5.png'
+  ];
 
-    function closeSettings() {
-      document.getElementById('settingsModal').style.display = 'none';
-    }
-  </script>
+  // Пытаемся взять сохранённую
+  let savedAvatar = localStorage.getItem('selectedAvatar');
+
+  if (savedAvatar) {
+    // Если есть сохранённая — используем её
+    avatarElement.src = savedAvatar;
+  } else {
+    // Если нет — ставим случайную из списка
+    const randomIndex = Math.floor(Math.random() * defaultAvatars.length);
+    const randomAvatar = defaultAvatars[randomIndex];
+    avatarElement.src = randomAvatar;
+    localStorage.setItem('selectedAvatar', randomAvatar); // сразу сохраняем, чтобы не менялась каждый раз
+  }
+
+  // Если у пользователя есть фото в Telegram — можно переопределить (опционально)
+  const user = tg.initDataUnsafe?.user || {};
+  if (user.photo_url) {
+    avatarElement.src = user.photo_url;
+    localStorage.setItem('selectedAvatar', user.photo_url);
+  }
+
+  function openSettings() {
+    document.getElementById('settingsModal').style.display = 'flex';
+  }
+
+  function closeSettings() {
+    document.getElementById('settingsModal').style.display = 'none';
+  }
+
+  function selectAvatar(src) {
+    avatarElement.src = src;
+    localStorage.setItem('selectedAvatar', src);
+    closeSettings(); // или closeAvatarModal(), если у тебя отдельная модалка аватарок
+  }
+</script>
 </body>
 </html>
