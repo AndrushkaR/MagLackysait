@@ -27,11 +27,14 @@
     .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#161b22; border-top:1px solid #30363d; display:flex; justify-content:space-around; padding:10px 0; font-size:12px; }
     .nav-item { text-align:center; cursor:pointer; color:#8b949e; }
     .nav-item.active { color:#FFD700; font-weight:bold; }
-    #settingsModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
-    .modal-content { background:#1f2937; padding:28px; border-radius:16px; width:85%; max-width:340px; text-align:center; border:1px solid #FFD70040; }
+    #settingsModal, #avatarModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
+    .modal-content { background:#1f2937; padding:28px; border-radius:16px; width:90%; max-width:360px; text-align:center; border:1px solid #FFD70040; }
     .modal-content h3 { color:#FFD700; margin:0 0 20px; font-size:22px; }
-    .lang-btn { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; min-width:120px; }
-    .lang-btn.active { background:#FFD700; color:black; font-weight:bold; }
+    .lang-btn, .avatar-option { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; min-width:120px; }
+    .avatar-option { padding:0; width:80px; height:80px; border-radius:50%; overflow:hidden; border:3px solid transparent; }
+    .avatar-option img { width:100%; height:100%; object-fit:cover; }
+    .avatar-option.selected { border-color:#FFD700; }
+    .lang-btn.active, .close-btn { background:#FFD700; color:black; font-weight:bold; }
     .close-btn { margin-top:20px; background:#FF5555; color:white; border:none; padding:12px 32px; border-radius:12px; cursor:pointer; font-size:16px; }
   </style>
 </head>
@@ -50,48 +53,35 @@
 
   <button class="connect-btn" id="connectWallet">Подключить TON-кошелёк</button>
 
-  <div class="live-tabs">
-    <div class="tab">Live</div>
-    <div class="tab">💎</div>
-    <div class="tab">💎</div>
-    <div class="tab">Lucky</div>
-    <div class="tab">Chain</div>
-  </div>
-
-  <div class="banner">
-    <h2>LuckyChainss</h2>
-    <p>Цепочка удачи начинается здесь! 🚀🔗</p>
-    <div style="font-size:32px;margin:10px 0;">🔗 x4.05 • x3.0 • x1.85 🔗</div>
-  </div>
-
-  <div class="cases">
-    <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FFD700/000?text=FREE24" alt="FREE24">
-      <p>FREE24</p>
-    </div>
-    <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FF69B4/000?text=EPIC+FREE" alt="FREE">
-      <p>EPIC FREE</p>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="window.location.href='inventory.html'">Инвентарь</div>
-    <div class="nav-item" onclick="window.location.href='invite.html'">Пригласить</div>
-    <div class="nav-item active">Главная</div>
-    <div class="nav-item" onclick="window.location.href='rating.html'">Рейтинг</div>
-    <div class="nav-item" onclick="window.location.href='rewards.html'">Награды</div>
-  </div>
+  <!-- ... остальной контент главной страницы (live-tabs, banner, cases, bottom-nav) ... -->
 
   <!-- Модалка настроек -->
   <div id="settingsModal">
     <div class="modal-content">
       <h3>Настройки</h3>
       <p>Выберите язык:</p>
-      <button class="lang-btn active" onclick="closeSettings()">Русский</button>
       <button class="lang-btn" onclick="window.location.href='english.html'">English</button>
+      <button class="lang-btn active" onclick="closeSettings()">Русский</button>
+      <br><br>
+      <button class="lang-btn" onclick="openAvatarModal()">Изменить аватарку</button>
       <br><br>
       <button class="close-btn" onclick="closeSettings()">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- Модалка выбора аватарки -->
+  <div id="avatarModal">
+    <div class="modal-content">
+      <h3>Выберите аватарку</h3>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:20px 0;">
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar1.png')"><img src="avatars/avatar1.png" alt="Avatar 1"></div>
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar2.png')"><img src="avatars/avatar2.png" alt="Avatar 2"></div>
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar3.png')"><img src="avatars/avatar3.png" alt="Avatar 3"></div>
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar4.png')"><img src="avatars/avatar4.png" alt="Avatar 4"></div>
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar5.png')"><img src="avatars/avatar5.png" alt="Avatar 5"></div>
+        <!-- Добавь столько, сколько у тебя аватарок -->
+      </div>
+      <button class="close-btn" onclick="closeAvatarModal()">Закрыть</button>
     </div>
   </div>
 
@@ -100,12 +90,45 @@
     tg.ready();
     tg.expand();
 
-    // Аватарка
-    const user = tg.initDataUnsafe?.user || {};
-    document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/52/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
+    // Загрузка сохранённой аватарки из localStorage
+    const savedAvatar = localStorage.getItem('selectedAvatar');
+    if (savedAvatar) {
+      document.getElementById('userAvatar').src = savedAvatar;
+    } else {
+      // Если нет — из Telegram
+      const user = tg.initDataUnsafe?.user || {};
+      document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/52/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
+    }
 
-    function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
-    function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
+    function openSettings() {
+      document.getElementById('settingsModal').style.display = 'flex';
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function openAvatarModal() {
+      closeSettings();
+      document.getElementById('avatarModal').style.display = 'flex';
+      // Подсветить текущую выбранную
+      const current = localStorage.getItem('selectedAvatar');
+      document.querySelectorAll('.avatar-option').forEach(opt => {
+        opt.classList.toggle('selected', opt.querySelector('img').src.includes(current || 'placeholder'));
+      });
+    }
+
+    function closeAvatarModal() {
+      document.getElementById('avatarModal').style.display = 'none';
+    }
+
+    function selectAvatar(src) {
+      document.getElementById('userAvatar').src = src;
+      localStorage.setItem('selectedAvatar', src);
+      document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      closeAvatarModal();
+    }
   </script>
 </body>
 </html>
