@@ -13,7 +13,7 @@
     .settings-badge { position:absolute; bottom:-4px; right:-4px; width:26px; height:26px; background:#161b22; border:3px solid #FFD700; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; transition:0.2s; }
     .settings-badge:hover { transform:scale(1.2); background:#2d3748; }
     .logo { font-size:24px; font-weight:bold; color:#FFD700; text-shadow:0 0 10px #FFD70080; flex:1; }
-    .balance { background:rgba(167,139,250,0.2); padding:8px 14px; border-radius:20px; font-size:15px; }
+    .balance { background:rgba(167,139,250,0.2); padding:8px 14px; border-radius:20px; font-size:15px; cursor:pointer; }
     .balance strong { color:#A78BFA; }
     .connect-btn { background:#FFD700; color:black; padding:14px 24px; border-radius:20px; font-weight:bold; border:none; cursor:pointer; width:90%; margin:16px auto; display:block; font-size:18px; }
     .connect-btn:disabled { background:#00ff88; color:#111; }
@@ -46,7 +46,7 @@
       <div class="settings-badge" onclick="openSettings()">⚙️</div>
     </div>
     <div class="logo">LuckyChainss</div>
-    <div class="balance">
+    <div class="balance" onclick="window.location.href='topup.html'">
       <strong id="tonBalance">0.000</strong> TON
     </div>
   </div>
@@ -84,7 +84,6 @@
     <div class="nav-item active">Главная</div>
     <div class="nav-item" onclick="window.location.href='rating.html'">Рейтинг</div>
     <div class="nav-item" onclick="window.location.href='rewards.html'">Награды</div>
-     <div class="nav-item" onclick="window.location.href='topup.html'">Пополнить</div>
   </div>
 
   <!-- Модалка настроек -->
@@ -138,6 +137,26 @@
       localStorage.setItem('selectedAvatar', src);
       closeAvatarModal();
     }
+
+    // TON Connect (если нужно — раскомментируй)
+    /*
+    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: 'https://your-site/tonconnect-manifest.json'
+    });
+    const connectButton = document.getElementById('connectWallet');
+    const balanceEl = document.getElementById('tonBalance');
+    connectButton.addEventListener('click', async () => {
+      try {
+        await tonConnectUI.connectWallet();
+        connectButton.textContent = 'Кошелёк подключён!';
+        connectButton.disabled = true;
+        const balanceNano = await tonConnectUI.getBalance();
+        balanceEl.textContent = (Number(balanceNano) / 1_000_000_000).toFixed(3);
+      } catch (e) {
+        alert('Ошибка: ' + e.message);
+      }
+    });
+    */
   </script>
 </body>
 </html>
