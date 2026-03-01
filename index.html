@@ -3,143 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LuckyChainss – TON Казик</title>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+  <title>LuckyChainss</title>
   <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0d1117;
-      color: white;
-      overflow-x: hidden;
-    }
+    body { margin:0; background:#0d1117; color:white; font-family:Arial; }
     .header {
-      background: #161b22;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid #30363d;
+      background:#161b22;
+      padding:12px 16px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border-bottom:1px solid #30363d;
     }
-    .avatar-container {
-      position: relative;
-      width: 48px;
-      height: 48px;
-    }
+    .avatar-container { position:relative; width:48px; height:48px; }
     .avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #FFD700;
+      width:100%; height:100%;
+      border-radius:50%;
+      border:2px solid #FFD700;
+      object-fit:cover;
     }
     .settings-badge {
-      position: absolute;
-      bottom: -4px;
-      right: -4px;
-      width: 22px;
-      height: 22px;
-      background: #161b22;
-      border-radius: 50%;
-      border: 2px solid #FFD700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      cursor: pointer;
-      transition: transform 0.15s;
+      position:absolute;
+      bottom:-4px; right:-4px;
+      width:22px; height:22px;
+      background:#161b22;
+      border:2px solid #FFD700;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      cursor:pointer;
+      transition:0.2s;
     }
-    .settings-badge:hover {
-      transform: scale(1.15);
-      background: #2d3748;
-    }
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-      color: #FFD700;
-      text-shadow: 0 0 10px #FFD70080;
-      flex: 1;
-    }
-    .balance {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(167, 139, 250, 0.2);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-    }
-    .balance strong { color: #A78BFA; }
+    .settings-badge:hover { transform:scale(1.2); background:#2d3748; }
 
-    /* Модалка настроек */
     #settingsModal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(4px);
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.8);
+      z-index:1000;
+      align-items:center;
+      justify-content:center;
     }
     .modal-content {
-      background: #1f2937;
-      padding: 24px 20px;
-      border-radius: 16px;
-      width: 88%;
-      max-width: 340px;
-      text-align: center;
-      border: 1px solid #30363d;
+      background:#1f2937;
+      padding:30px;
+      border-radius:16px;
+      width:85%;
+      text-align:center;
     }
-    .modal-content h3 {
-      margin: 0 0 20px;
-      color: #FFD700;
-      font-size: 20px;
-    }
-    .lang-btn {
-      background: #30363d;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      margin: 10px 6px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 16px;
-      min-width: 110px;
-      transition: all 0.2s;
-    }
-    .lang-btn:hover { background: #3d4759; }
-    .lang-btn.active {
-      background: #FFD700;
-      color: black;
-      font-weight: bold;
-    }
-    .close-btn {
-      margin-top: 16px;
-      background: #FF5555;
-      color: white;
-      border: none;
-      padding: 10px 28px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    /* Остальные стили (connect-btn, live-tabs, banner, cases, bottom-nav) — вставь из предыдущей версии */
-    .connect-btn {
-      background: #FFD700;
-      color: black;
-      padding: 12px 24px;
-      border-radius: 20px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      width: 90%;
-      margin: 16px auto;
-      display: block;
-      font-size: 18px;
-    }
-    .connect-btn:disabled { background: #00ff88; color: #111; }
   </style>
 </head>
 <body>
@@ -149,126 +62,40 @@
       <img id="userAvatar" class="avatar" src="https://via.placeholder.com/48?text=AVA" alt="Avatar">
       <div class="settings-badge" id="settingsTrigger">⚙️</div>
     </div>
-    
-    <div class="logo">LuckyChainss</div>
-    
-    <div class="balance">
-      <strong id="tonBalance">0.000</strong> TON
+    <div style="font-size:22px; font-weight:bold; color:#FFD700; flex:1;">LuckyChainss</div>
+    <div style="background:rgba(167,139,250,0.2); padding:6px 12px; border-radius:20px;">
+      Баланс <strong>0.000 TON</strong>
     </div>
   </div>
 
-  <button class="connect-btn" id="connectWallet">Подключить TON-кошелёк</button>
-
-  <!-- Здесь остальной контент: live-tabs, banner, cases, bottom-nav — как было раньше -->
-
-  <!-- Модалка настроек -->
+  <!-- Модалка -->
   <div id="settingsModal">
     <div class="modal-content">
-      <h3 data-key="settings">Настройки</h3>
-      <p data-key="selectLanguage">Выберите язык:</p>
-      
-      <button class="lang-btn active" data-lang="ru">Русский</button>
-      <button class="lang-btn" data-lang="en">English</button>
-      
-      <br>
-      <button class="close-btn" onclick="closeSettings()">Закрыть</button>
+      <h2 style="color:#FFD700;">Настройки</h2>
+      <p>Выберите язык:</p>
+      <button style="padding:12px 24px; margin:10px; background:#FFD700; color:black; border:none; border-radius:12px; font-size:16px;">Русский</button>
+      <button style="padding:12px 24px; margin:10px; background:#30363d; color:white; border:none; border-radius:12px; font-size:16px;">English</button>
+      <br><br>
+      <button onclick="document.getElementById('settingsModal').style.display='none'" style="background:#FF5555; color:white; padding:10px 30px; border:none; border-radius:12px;">Закрыть</button>
     </div>
   </div>
 
   <script>
+    console.log('Страница загружена — скрипт работает');
+
+    // Тест клика по шестерёнке
+    document.getElementById('settingsTrigger').addEventListener('click', () => {
+      console.log('Шестерёнка нажата!');
+      alert('Шестерёнка РАБОТАЕТ! ✅\nМодалка должна открыться.');
+      document.getElementById('settingsModal').style.display = 'flex';
+    });
+
+    // Аватарка из Telegram
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
-
-    // Аватарка пользователя
     const user = tg.initDataUnsafe?.user || {};
-    const avatarEl = document.getElementById('userAvatar');
-    avatarEl.src = user.photo_url || `https://via.placeholder.com/48/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
-
-    // Открытие настроек ТОЛЬКО по клику на шестерёнку
-    document.getElementById('settingsTrigger').onclick = () => {
-      document.getElementById('settingsModal').style.display = 'flex';
-    };
-
-    function closeSettings() {
-      document.getElementById('settingsModal').style.display = 'none';
-    }
-
-    // Переводы (расширяй по необходимости)
-    const translations = {
-      ru: {
-        settings: "Настройки",
-        selectLanguage: "Выберите язык:",
-        connectWallet: "Подключить TON-кошелёк",
-        connected: "Кошелёк подключён!"
-      },
-      en: {
-        settings: "Settings",
-        selectLanguage: "Select language:",
-        connectWallet: "Connect TON Wallet",
-        connected: "Wallet connected!"
-      }
-    };
-
-    let currentLang = localStorage.getItem('lang') || 'ru';
-    document.documentElement.lang = currentLang;
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('lang', lang);
-      
-      document.querySelectorAll('[data-key]').forEach(el => {
-        const key = el.dataset.key;
-        if (translations[lang][key]) {
-          el.textContent = translations[lang][key];
-        }
-      });
-
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
-
-      // Обновляем кнопку подключения, если она уже изменена
-      const connectBtn = document.getElementById('connectWallet');
-      if (connectBtn.disabled) {
-        connectBtn.textContent = translations[lang].connected;
-      } else {
-        connectBtn.textContent = translations[lang].connectWallet;
-      }
-
-      document.documentElement.lang = lang;
-      closeSettings();
-    }
-
-    // Инициализация языка при загрузке
-    setLanguage(currentLang);
-
-    // Обработчики кнопок языка
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.onclick = () => setLanguage(btn.dataset.lang);
-    });
-
-    // TON Connect (как раньше)
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://твоя-ссылка.netlify.app/tonconnect-manifest.json'  // ← замени
-    });
-
-    const connectButton = document.getElementById('connectWallet');
-    const balanceEl = document.getElementById('tonBalance');
-
-    connectButton.onclick = async () => {
-      try {
-        await tonConnectUI.connectWallet();
-        connectButton.textContent = translations[currentLang].connected;
-        connectButton.disabled = true;
-
-        const balanceNano = await tonConnectUI.getBalance();
-        const balanceTon = (Number(balanceNano) / 1_000_000_000).toFixed(4);
-        balanceEl.textContent = balanceTon;
-      } catch (e) {
-        alert('Ошибка: ' + e.message);
-      }
-    };
+    document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/48/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
   </script>
 </body>
 </html>
