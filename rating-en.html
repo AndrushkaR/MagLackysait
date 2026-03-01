@@ -91,63 +91,49 @@
     }
     .leaderboard {
       padding: 0 16px;
-      max-height: 400px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #a78bfa #1f2937;
-    }
-    .leaderboard::-webkit-scrollbar {
-      width: 6px;
-    }
-    .leaderboard::-webkit-scrollbar-thumb {
-      background: #a78bfa;
-      border-radius: 3px;
     }
     .leaderboard-item {
       background: #1f2937;
       border-radius: 16px;
-      padding: 12px 16px;
-      margin-bottom: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
     }
     .rank {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
       min-width: 40px;
       text-align: center;
     }
     .avatar {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       background-size: cover;
       background-position: center;
     }
     .username {
       flex: 1;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
     .prize-icon {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       background: #FFD700;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 24px;
     }
     .score {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
       color: #a78bfa;
-      min-width: 80px;
+      min-width: 100px;
       text-align: right;
     }
     .bottom-nav {
@@ -199,8 +185,42 @@
     <p style="color:#d1d5db; margin-top:12px;">Compete with other users and win amazing prizes!</p>
   </div>
 
-  <div class="leaderboard" id="leaderboard">
-    <!-- Leaderboard items will be added by JS -->
+  <div class="leaderboard">
+    <div class="leaderboard-item">
+      <div class="rank" style="color:#FFD700;">1</div>
+      <div class="avatar" style="background:#FFD700;"></div>
+      <div class="username">qd***sa</div>
+      <div class="prize-icon">👜</div>
+      <div class="score">928.1K</div>
+    </div>
+    <div class="leaderboard-item">
+      <div class="rank" style="color:#C0C0C0;">2</div>
+      <div class="avatar" style="background:#C0C0C0;"></div>
+      <div class="username">Wh***26</div>
+      <div class="prize-icon">🧴</div>
+      <div class="score">182.4K</div>
+    </div>
+    <div class="leaderboard-item">
+      <div class="rank" style="color:#CD7F32;">3</div>
+      <div class="avatar" style="background:#CD7F32;"></div>
+      <div class="username">Im***hh</div>
+      <div class="prize-icon">💄</div>
+      <div class="score">150.0K</div>
+    </div>
+    <div class="leaderboard-item">
+      <div class="rank">4</div>
+      <div class="avatar" style="background:#a78bfa;"></div>
+      <div class="username">gh***al</div>
+      <div class="prize-icon">🎁</div>
+      <div class="score">120.5K</div>
+    </div>
+    <div class="leaderboard-item">
+      <div class="rank">5</div>
+      <div class="avatar" style="background:#a78bfa;"></div>
+      <div class="username">N_***91I</div>
+      <div class="prize-icon">🏆</div>
+      <div class="score">98.7K</div>
+    </div>
   </div>
 
   <div class="bottom-nav">
@@ -216,10 +236,10 @@
     tg.ready();
     tg.expand();
 
-    // Countdown timer (example: ends in 7 days from now)
+    // Обратный отсчёт (можно изменить дату окончания)
     function startTimer() {
-      // Change this date to your real end date
-      const endDate = new Date('2026-03-08T23:59:59'); // example: March 8, 2026
+      // Пример: рейтинг заканчивается 8 марта 2026 в 23:59
+      const endDate = new Date('2026-03-08T23:59:59').getTime();
       const timerEl = document.getElementById('timer');
 
       const interval = setInterval(() => {
@@ -242,97 +262,6 @@
     }
 
     startTimer();
-
-    // Generate leaderboard (top 250)
-    const leaderboard = document.getElementById('leaderboard');
-    const prizeIcons = ['👜', '🧴', '💄', '🎁', '🏆', '💎'];
-
-    for (let i = 1; i <= 250; i++) {
-      const item = document.createElement('div');
-      item.className = 'leaderboard-item';
-
-      // Make top 3 gold/silver/bronze, rest normal
-      let rankColor = '#a78bfa';
-      if (i === 1) rankColor = '#FFD700';
-      if (i === 2) rankColor = '#C0C0C0';
-      if (i === 3) rankColor = '#CD7F32';
-      if (i > 10) item.style.background = '#2d3748';
-
-      const randomHue = Math.floor(Math.random() * 360);
-      const avatarStyle = `background: hsl(${randomHue}, 70%, 60%);`;
-
-      item.innerHTML = `
-        <div class="rank" style="color:${rankColor};">${i}</div>
-        <div class="avatar" style="${avatarStyle}"></div>
-        <div class="username">${['qd***sa','Wh***26','Im***hh','gh***al','N_***91I'][i % 5]}${Math.floor(Math.random()*100)}</div>
-        <div class="prize-icon">${prizeIcons[i % prizeIcons.length]}</div>
-        <div class="score">${(Math.floor(Math.random() * 1000000) + 10000).toLocaleString()}K</div>
-      `;
-
-      leaderboard.appendChild(item);
-    }
-  </script>
-</body>
-</html>    <div class="back-btn" onclick="history.back()">←</div>
-    <div class="title">Rating</div>
-    <div></div>
-  </div>
-
-  <div class="balance-section">
-    <div class="balance-info">
-      <div class="balance-icon">💎</div>
-      <div>
-        <div>Your balance</div>
-        <div class="balance-value">0.002</div>
-      </div>
-    </div>
-    <button class="topup-btn">Top up</button>
-  </div>
-
-  <div class="rating-header">
-    <h2 class="rating-title">Rating</h2>
-    <div class="timer">Ends in: 6d 22h 19m 38s</div>
-    <div class="participants">Participants: 250</div>
-    <p style="color:#d1d5db; margin-top:12px;">Compete with other users and win amazing prizes!</p>
-  </div>
-
-  <div class="leaderboard">
-    <div class="leaderboard-item">
-      <div class="rank">1</div>
-      <div class="avatar" style="background:#FFD700;">1</div>
-      <div class="username">qd***sa</div>
-      <div class="prize-icon">👜</div>
-      <div class="score">928.1K</div>
-    </div>
-    <div class="leaderboard-item">
-      <div class="rank">2</div>
-      <div class="avatar" style="background:#00CED1;">2</div>
-      <div class="username">Wh***26</div>
-      <div class="prize-icon">🧴</div>
-      <div class="score">182.4K</div>
-    </div>
-    <!-- Добавь остальные места -->
-    <div class="leaderboard-item" style="background:#2d3748;">
-      <div class="rank">...</div>
-      <div class="avatar" style="background:#8B5CF6;">999+</div>
-      <div class="username">SHRAM+</div>
-      <div class="prize-icon">❌</div>
-      <div class="score">0</div>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="window.location.href='inventory-en.html'">Inventory</div>
-    <div class="nav-item" onclick="window.location.href='invite-en.html'">Invite</div>
-    <div class="nav-item" onclick="window.location.href='english.html'">Home</div>
-    <div class="nav-item active" onclick="window.location.href='rating-en.html'">Rating</div>
-    <div class="nav-item" onclick="window.location.href='rewards-en.html'">Rewards</div>
-  </div>
-
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
   </script>
 </body>
 </html>
