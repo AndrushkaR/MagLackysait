@@ -69,11 +69,11 @@
 
   <div class="cases">
     <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FFD700/000?text=FREE24" alt="FREE24">
+      <img src="gifs/free24.gif" alt="FREE24" style="width:100%; height:140px; object-fit:cover; border-radius:8px;">
       <p>FREE24</p>
     </div>
     <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FF69B4/000?text=EPIC+FREE" alt="FREE">
+      <img src="gifs/epic-free.gif" alt="EPIC FREE" style="width:100%; height:140px; object-fit:cover; border-radius:8px;">
       <p>EPIC FREE</p>
     </div>
   </div>
@@ -110,7 +110,6 @@
         <div class="avatar-option" onclick="selectAvatar('avatars/avatar3.png')"><img src="avatars/avatar3.png" alt="Avatar 3"></div>
         <div class="avatar-option" onclick="selectAvatar('avatars/avatar4.png')"><img src="avatars/avatar4.png" alt="Avatar 4"></div>
         <div class="avatar-option" onclick="selectAvatar('avatars/avatar5.png')"><img src="avatars/avatar5.png" alt="Avatar 5"></div>
-        <!-- Добавь свои аватарки сюда -->
       </div>
       <button class="close-btn" onclick="closeAvatarModal()">Закрыть</button>
     </div>
@@ -121,7 +120,6 @@
     tg.ready();
     tg.expand();
 
-    // Аватарка
     const savedAvatar = localStorage.getItem('selectedAvatar');
     if (savedAvatar) {
       document.getElementById('userAvatar').src = savedAvatar;
@@ -139,26 +137,6 @@
       localStorage.setItem('selectedAvatar', src);
       closeAvatarModal();
     }
-
-    // TON Connect (раскомментируй когда нужно)
-    /*
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://твоя-ссылка/tonconnect-manifest.json'
-    });
-    const connectButton = document.getElementById('connectWallet');
-    const balanceEl = document.getElementById('tonBalance');
-    connectButton.addEventListener('click', async () => {
-      try {
-        await tonConnectUI.connectWallet();
-        connectButton.textContent = 'Кошелёк подключён!';
-        connectButton.disabled = true;
-        const balanceNano = await tonConnectUI.getBalance();
-        balanceEl.textContent = (Number(balanceNano) / 1_000_000_000).toFixed(4);
-      } catch (e) {
-        alert('Ошибка: ' + e.message);
-      }
-    });
-    */
   </script>
 </body>
 </html>
