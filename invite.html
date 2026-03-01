@@ -1,111 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LuckyChainss – TON Casino</title>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+  <title>LuckyChainss – Пригласить друзей</title>
   <style>
-    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0d1117; color:white; overflow-x:hidden; }
-    .header { background:#161b22; padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #30363d; }
-    .avatar-container { position:relative; width:52px; height:52px; }
-    .avatar { width:100%; height:100%; border-radius:50%; object-fit:cover; border:3px solid #FFD700; }
-    .settings-badge { position:absolute; bottom:-4px; right:-4px; width:26px; height:26px; background:#161b22; border:3px solid #FFD700; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; transition:0.2s; }
-    .settings-badge:hover { transform:scale(1.2); background:#2d3748; }
-    .logo { font-size:24px; font-weight:bold; color:#FFD700; text-shadow:0 0 10px #FFD70080; flex:1; }
-    .balance { background:rgba(167,139,250,0.2); padding:8px 14px; border-radius:20px; font-size:15px; }
-    .balance strong { color:#A78BFA; }
-    .connect-btn { background:#FFD700; color:black; padding:14px 24px; border-radius:20px; font-weight:bold; border:none; cursor:pointer; width:90%; margin:16px auto; display:block; font-size:18px; }
-    .connect-btn:disabled { background:#00ff88; color:#111; }
-    .live-tabs { display:flex; overflow-x:auto; padding:12px 0; gap:12px; background:#0d1117; }
-    .tab { background:rgba(255,215,0,0.15); color:#FFD700; padding:8px 18px; border-radius:20px; white-space:nowrap; font-weight:bold; border:1px solid #FFD700; cursor:pointer; }
-    .banner { margin:16px; background:linear-gradient(135deg,#4B0082,#8A2BE2); border-radius:16px; padding:24px; text-align:center; position:relative; }
-    .banner h2 { margin:0; font-size:28px; color:#FFD700; }
-    .cases { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:16px; margin-bottom:90px; }
-    .case-card { background:#1f2937; border-radius:12px; overflow:hidden; text-align:center; padding:12px; border:1px solid #FFD70050; }
-    .case-card img { width:100%; height:140px; object-fit:cover; border-radius:8px; }
-    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#161b22; border-top:1px solid #30363d; display:flex; justify-content:space-around; padding:10px 0; font-size:12px; }
-    .nav-item { text-align:center; cursor:pointer; color:#8b949e; }
-    .nav-item.active { color:#FFD700; font-weight:bold; }
-    #settingsModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
-    .modal-content { background:#1f2937; padding:28px; border-radius:16px; width:85%; max-width:340px; text-align:center; border:1px solid #FFD70040; }
-    .modal-content h3 { color:#FFD700; margin:0 0 20px; font-size:22px; }
-    .lang-btn { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; min-width:120px; }
-    .lang-btn.active { background:#FFD700; color:black; font-weight:bold; }
-    .close-btn { margin-top:20px; background:#FF5555; color:white; border:none; padding:12px 32px; border-radius:12px; cursor:pointer; font-size:16px; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: white;
+      overflow-x: hidden;
+      padding-bottom: 90px;
+    }
+    .header {
+      background: #161b22;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #30363d;
+    }
+    .back-btn {
+      font-size: 24px;
+      color: #8b949e;
+      cursor: pointer;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .balance-section {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+    .balance-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .balance-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .balance-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #a78bfa;
+    }
+    .topup-btn {
+      background: #a78bfa;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .referral-section {
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .referral-block {
+      background: #2d1b47;
+      border-radius: 16px;
+      padding: 24px 16px;
+      margin-bottom: 20px;
+    }
+    .referral-title {
+      font-size: 24px;
+      margin: 0 0 12px;
+      color: #a78bfa;
+    }
+    .referral-percent {
+      font-size: 36px;
+      font-weight: bold;
+      color: #a78bfa;
+    }
+    .referral-text {
+      font-size: 16px;
+      color: #d1d5db;
+      margin: 8px 0;
+    }
+    .action-btn {
+      background: #a78bfa;
+      color: black;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      width: 100%;
+      margin: 12px 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .copy-btn {
+      background: #3b82f6;
+      color: white;
+    }
+    .stats {
+      background: #1f2937;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .stats-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #a78bfa;
+    }
+    .referrals-list {
+      background: #1f2937;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .referrals-empty {
+      font-size: 18px;
+      color: #8b949e;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-size: 12px;
+    }
+    .nav-item {
+      text-align: center;
+      cursor: pointer;
+      color: #8b949e;
+    }
+    .nav-item.active {
+      color: #a78bfa;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <div class="avatar-container">
-      <img id="userAvatar" class="avatar" src="https://via.placeholder.com/52?text=AVA" alt="Avatar">
-      <div class="settings-badge" onclick="openSettings()">⚙️</div>
-    </div>
-    <div class="logo">LuckyChainss</div>
-    <div class="balance">
-      <strong id="tonBalance">0.000</strong> TON
-    </div>
+    <div class="back-btn" onclick="history.back()">←</div>
+    <div class="title">Пригласить друзей</div>
+    <div></div>
   </div>
 
-  <button class="connect-btn" id="connectWallet">Connect TON Wallet</button>
-
-  <div class="live-tabs">
-    <div class="tab">Live</div>
-    <div class="tab">💎</div>
-    <div class="tab">💎</div>
-    <div class="tab">Lucky</div>
-    <div class="tab">Chain</div>
-  </div>
-
-  <div class="banner">
-    <h2>LuckyChainss</h2>
-    <p>The chain of luck starts here! 🚀🔗</p>
-    <div style="font-size:32px;margin:10px 0;">🔗 x4.05 • x3.0 • x1.85 🔗</div>
-  </div>
-
-  <div class="cases">
-    <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FFD700/000?text=FREE24" alt="FREE24">
-      <p>FREE24</p>
+  <div class="balance-section">
+    <div class="balance-info">
+      <div class="balance-icon">💎</div>
+      <div>
+        <div>Ваш баланс</div>
+        <div class="balance-value">0.002</div>
+      </div>
     </div>
-    <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FF69B4/000?text=EPIC+FREE" alt="FREE">
-      <p>EPIC FREE</p>
+    <button class="topup-btn">Пополнить</button>
+  </div>
+
+  <div class="referral-section">
+    <div class="referral-block">
+      <div class="referral-title">Получай <span class="referral-percent">10%</span></div>
+      <p class="referral-text">приглашая друзей<br>С каждого их пополнения</p>
+    </div>
+
+    <button class="action-btn">↷ Пригласить друзей</button>
+    <button class="action-btn copy-btn">📋 Скопировать реферальную ссылку</button>
+
+    <div class="stats">
+      <div>Всего заработано</div>
+      <div class="stats-value">0.000 💎</div>
+    </div>
+
+    <div class="referrals-list">
+      <div class="stats-value">Мои рефералы</div>
+      <div class="referrals-empty">Пока нет приглашений</div>
     </div>
   </div>
 
   <div class="bottom-nav">
-    <div class="nav-item" onclick="window.location.href='inventory.html'">Inventory</div>
-    <div class="nav-item" onclick="window.location.href='invite.html'">Invite</div>
-    <div class="nav-item active">Home</div>
-    <div class="nav-item" onclick="window.location.href='rating.html'">Rating</div>
-    <div class="nav-item" onclick="window.location.href='rewards.html'">Rewards</div>
-  </div>
-
-  <!-- Модалка настроек -->
-  <div id="settingsModal">
-    <div class="modal-content">
-      <h3>Settings</h3>
-      <p>Select language:</p>
-      <button class="lang-btn" onclick="window.location.href='index.html'">Русский</button>
-      <button class="lang-btn active" onclick="closeSettings()">English</button>
-      <br><br>
-      <button class="close-btn" onclick="closeSettings()">Close</button>
-    </div>
+    <div class="nav-item" onclick="window.location.href='inventory.html'">Инвентарь</div>
+    <div class="nav-item active" onclick="window.location.href='invite.html'">Пригласить</div>
+    <div class="nav-item" onclick="window.location.href='index.html'">Главная</div>
+    <div class="nav-item" onclick="window.location.href='rating.html'">Рейтинг</div>
+    <div class="nav-item" onclick="window.location.href='rewards.html'">Награды</div>
   </div>
 
   <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
-
-    // Аватарка
-    const user = tg.initDataUnsafe?.user || {};
-    document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/52/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
-
-    function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
-    function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
   </script>
 </body>
 </html>
