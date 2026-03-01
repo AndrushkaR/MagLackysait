@@ -162,7 +162,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0,0,0,0.85);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -262,7 +262,7 @@
     <div class="modal-content">
       <h3>Settings</h3>
       <p>Select language:</p>
-      <button class="lang-btn" onclick="window.location.href='index.html'">Русский</button>
+      <button class="lang-btn" onclick="window.location.href='index.html'">Russian</button>
       <button class="lang-btn active" onclick="closeSettings()">English</button>
       <br><br>
       <button class="close-btn" onclick="closeSettings()">Close</button>
@@ -274,7 +274,7 @@
     tg.ready();
     tg.expand();
 
-    // Аватарка из Telegram
+    // Load user avatar from Telegram
     const user = tg.initDataUnsafe?.user || {};
     document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/52/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
 
@@ -286,13 +286,15 @@
       document.getElementById('settingsModal').style.display = 'none';
     }
 
-    // Если хочешь подключить TON Connect — раскомментируй и подставь manifestUrl
+    // Optional: TON Connect (uncomment when ready)
     /*
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://твоя-ссылка.pages.dev/tonconnect-manifest.json'
+      manifestUrl: 'https://your-site.pages.dev/tonconnect-manifest.json' // ← replace with your real URL
     });
+
     const connectButton = document.getElementById('connectWallet');
     const balanceEl = document.getElementById('tonBalance');
+
     connectButton.addEventListener('click', async () => {
       try {
         await tonConnectUI.connectWallet();
