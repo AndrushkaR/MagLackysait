@@ -41,7 +41,7 @@
 
   <div class="header">
     <div class="avatar-container">
-      <img id="userAvatar" class="avatar" src="avatars/default-avatar.png" alt="Avatar"> <!-- ← здесь по умолчанию -->
+      <img id="userAvatar" class="avatar" src="avatars/default-avatar.png" alt="Avatar">
       <div class="settings-badge" onclick="openSettings()">⚙️</div>
     </div>
     <div class="logo">LuckyChainss</div>
@@ -120,8 +120,8 @@
 
     const avatarElement = document.getElementById('userAvatar');
 
-    // Фиксированная аватарка по умолчанию при первом заходе
-    const defaultAvatar = 'avatars/default-avatar.png'; // ← поменяй на свою любимую, если хочешь
+    // Фиксированная аватарка по умолчанию
+    const defaultAvatar = 'avatars/default-avatar.png'; // ← замени на свою, если хочешь другую
 
     let savedAvatar = localStorage.getItem('selectedAvatar');
 
@@ -132,7 +132,6 @@
       localStorage.setItem('selectedAvatar', defaultAvatar);
     }
 
-    // Если есть фото в Telegram — используем его (можно удалить, если не нужно)
     const user = tg.initDataUnsafe?.user || {};
     if (user.photo_url) {
       avatarElement.src = user.photo_url;
