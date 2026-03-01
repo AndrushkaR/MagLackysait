@@ -5,36 +5,275 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LuckyChainss – Rating</title>
   <style>
-    /* Тот же CSS, что и в русской версии — копируй полностью */
-    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0d1117; color:white; overflow-x:hidden; padding-bottom:90px; }
-    .header { background:#161b22; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #30363d; }
-    .back-btn { font-size:24px; color:#8b949e; cursor:pointer; }
-    .title { font-size:18px; font-weight:bold; }
-    .balance-section { padding:16px; display:flex; align-items:center; justify-content:space-between; background:#161b22; border-bottom:1px solid #30363d; }
-    .balance-info { display:flex; align-items:center; gap:12px; }
-    .balance-icon { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg, #a78bfa, #7c3aed); display:flex; align-items:center; justify-content:center; font-size:20px; }
-    .balance-value { font-size:20px; font-weight:bold; color:#a78bfa; }
-    .topup-btn { background:#a78bfa; color:black; padding:10px 20px; border-radius:30px; border:none; font-weight:bold; cursor:pointer; }
-    .rating-header { padding:20px 16px; text-align:center; }
-    .rating-title { font-size:28px; margin:0 0 8px; color:#a78bfa; }
-    .timer { background:#2d1b47; border-radius:30px; padding:12px 20px; display:inline-block; font-size:18px; margin:12px 0; }
-    .participants { font-size:16px; color:#d1d5db; }
-    .leaderboard { padding:0 16px; }
-    .leaderboard-item { background:#1f2937; border-radius:16px; padding:16px; margin-bottom:12px; display:flex; align-items:center; gap:16px; }
-    .rank { font-size:24px; font-weight:bold; min-width:40px; text-align:center; }
-    .avatar { width:60px; height:60px; border-radius:50%; background:#a78bfa; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; }
-    .username { flex:1; font-size:18px; font-weight:bold; }
-    .prize-icon { width:48px; height:48px; background:#FFD700; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; }
-    .score { font-size:20px; font-weight:bold; color:#a78bfa; min-width:100px; text-align:right; }
-    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#161b22; border-top:1px solid #30363d; display:flex; justify-content:space-around; padding:10px 0; font-size:12px; }
-    .nav-item { text-align:center; cursor:pointer; color:#8b949e; }
-    .nav-item.active { color:#a78bfa; font-weight:bold; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: white;
+      overflow-x: hidden;
+      padding-bottom: 90px;
+    }
+    .header {
+      background: #161b22;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #30363d;
+    }
+    .back-btn {
+      font-size: 24px;
+      color: #8b949e;
+      cursor: pointer;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .balance-section {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+    .balance-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .balance-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .balance-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #a78bfa;
+    }
+    .topup-btn {
+      background: #a78bfa;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .rating-header {
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .rating-title {
+      font-size: 28px;
+      margin: 0 0 8px;
+      color: #a78bfa;
+    }
+    .timer {
+      background: #2d1b47;
+      border-radius: 30px;
+      padding: 12px 20px;
+      display: inline-block;
+      font-size: 18px;
+      margin: 12px 0;
+      min-width: 220px;
+    }
+    .participants {
+      font-size: 16px;
+      color: #d1d5db;
+    }
+    .leaderboard {
+      padding: 0 16px;
+      max-height: 400px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #a78bfa #1f2937;
+    }
+    .leaderboard::-webkit-scrollbar {
+      width: 6px;
+    }
+    .leaderboard::-webkit-scrollbar-thumb {
+      background: #a78bfa;
+      border-radius: 3px;
+    }
+    .leaderboard-item {
+      background: #1f2937;
+      border-radius: 16px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .rank {
+      font-size: 20px;
+      font-weight: bold;
+      min-width: 40px;
+      text-align: center;
+    }
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+    }
+    .username {
+      flex: 1;
+      font-size: 16px;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .prize-icon {
+      width: 40px;
+      height: 40px;
+      background: #FFD700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .score {
+      font-size: 18px;
+      font-weight: bold;
+      color: #a78bfa;
+      min-width: 80px;
+      text-align: right;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-size: 12px;
+    }
+    .nav-item {
+      text-align: center;
+      cursor: pointer;
+      color: #8b949e;
+    }
+    .nav-item.active {
+      color: #a78bfa;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 
   <div class="header">
     <div class="back-btn" onclick="history.back()">←</div>
+    <div class="title">Rating</div>
+    <div></div>
+  </div>
+
+  <div class="balance-section">
+    <div class="balance-info">
+      <div class="balance-icon">💎</div>
+      <div>
+        <div>Your balance</div>
+        <div class="balance-value">0.002</div>
+      </div>
+    </div>
+    <button class="topup-btn">Top up</button>
+  </div>
+
+  <div class="rating-header">
+    <h2 class="rating-title">Rating</h2>
+    <div class="timer" id="timer">Ends in: calculating...</div>
+    <div class="participants">Participants: 250</div>
+    <p style="color:#d1d5db; margin-top:12px;">Compete with other users and win amazing prizes!</p>
+  </div>
+
+  <div class="leaderboard" id="leaderboard">
+    <!-- Leaderboard items will be added by JS -->
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='inventory-en.html'">Inventory</div>
+    <div class="nav-item" onclick="window.location.href='invite-en.html'">Invite</div>
+    <div class="nav-item" onclick="window.location.href='english.html'">Home</div>
+    <div class="nav-item active" onclick="window.location.href='rating-en.html'">Rating</div>
+    <div class="nav-item" onclick="window.location.href='rewards-en.html'">Rewards</div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    // Countdown timer (example: ends in 7 days from now)
+    function startTimer() {
+      // Change this date to your real end date
+      const endDate = new Date('2026-03-08T23:59:59'); // example: March 8, 2026
+      const timerEl = document.getElementById('timer');
+
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = endDate - now;
+
+        if (distance < 0) {
+          timerEl.innerHTML = "Rating has ended!";
+          clearInterval(interval);
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        timerEl.innerHTML = `Ends in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }, 1000);
+    }
+
+    startTimer();
+
+    // Generate leaderboard (top 250)
+    const leaderboard = document.getElementById('leaderboard');
+    const prizeIcons = ['👜', '🧴', '💄', '🎁', '🏆', '💎'];
+
+    for (let i = 1; i <= 250; i++) {
+      const item = document.createElement('div');
+      item.className = 'leaderboard-item';
+
+      // Make top 3 gold/silver/bronze, rest normal
+      let rankColor = '#a78bfa';
+      if (i === 1) rankColor = '#FFD700';
+      if (i === 2) rankColor = '#C0C0C0';
+      if (i === 3) rankColor = '#CD7F32';
+      if (i > 10) item.style.background = '#2d3748';
+
+      const randomHue = Math.floor(Math.random() * 360);
+      const avatarStyle = `background: hsl(${randomHue}, 70%, 60%);`;
+
+      item.innerHTML = `
+        <div class="rank" style="color:${rankColor};">${i}</div>
+        <div class="avatar" style="${avatarStyle}"></div>
+        <div class="username">${['qd***sa','Wh***26','Im***hh','gh***al','N_***91I'][i % 5]}${Math.floor(Math.random()*100)}</div>
+        <div class="prize-icon">${prizeIcons[i % prizeIcons.length]}</div>
+        <div class="score">${(Math.floor(Math.random() * 1000000) + 10000).toLocaleString()}K</div>
+      `;
+
+      leaderboard.appendChild(item);
+    }
+  </script>
+</body>
+</html>    <div class="back-btn" onclick="history.back()">←</div>
     <div class="title">Rating</div>
     <div></div>
   </div>
