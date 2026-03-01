@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuckyChainss – Daily Case</title>
+  <style>
+    /* Тот же CSS, что в русской версии */
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="back-btn" onclick="history.back()">←</div>
+    <div class="title">Daily Case</div>
+    <div></div>
+  </div>
+
+  <div class="balance-section">
+    <div class="balance-info">
+      <div class="balance-icon">💎</div>
+      <div>
+        <div>Your balance</div>
+        <div class="balance-value">0.000</div>
+      </div>
+    </div>
+    <button class="topup-btn" onclick="window.location.href='topup-en.html'">Top up</button>
+  </div>
+
+  <div class="daily-case">
+    <div class="daily-title">
+      <span>📅</span> Daily Case – Latest Top Drops
+    </div>
+
+    <div class="daily-drops">
+      <div class="drop-item">
+        <div class="drop-icon">🍦</div>
+        <div class="drop-info">
+          <div class="drop-name">Ice Cream</div>
+          <div class="drop-value">4.73 TON</div>
+        </div>
+        <div class="drop-time">1h ago</div>
+      </div>
+      <!-- Add more drops -->
+    </div>
+
+    <div class="timer-box">
+      <div class="timer-title">Come back in</div>
+      <div class="timer" id="dailyTimer">17h 7m 54s</div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='inventory-en.html'">Inventory</div>
+    <div class="nav-item" onclick="window.location.href='invite-en.html'">Invite</div>
+    <div class="nav-item" onclick="window.location.href='english.html'">Home</div>
+    <div class="nav-item" onclick="window.location.href='rating-en.html'">Rating</div>
+    <div class="nav-item" onclick="window.location.href='rewards-en.html'">Rewards</div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    function startDailyTimer() {
+      const endTime = new Date().getTime() + 24 * 60 * 60 * 1000;
+      const timerEl = document.getElementById('dailyTimer');
+
+      setInterval(() => {
+        const now = new Date().getTime();
+        const distance = endTime - now;
+
+        if (distance < 0) {
+          timerEl.innerHTML = "Case available!";
+          return;
+        }
+
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        timerEl.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+      }, 1000);
+    }
+
+    startDailyTimer();
+  </script>
+</body>
+</html>
