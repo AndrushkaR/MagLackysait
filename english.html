@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LuckyChainss – TON Casino</title>
   <style>
-    /* Тот же CSS, что в русской версии */
+    /* Полностью тот же CSS, что в русской версии выше */
   </style>
 </head>
 <body>
@@ -55,6 +55,18 @@
     <div class="nav-item" onclick="window.location.href='rewards-en.html'">Rewards</div>
   </div>
 
+  <!-- Settings Modal -->
+  <div id="settingsModal">
+    <div class="modal-content">
+      <h3>Settings</h3>
+      <p>Select language:</p>
+      <button class="lang-btn" onclick="window.location.href='index.html'">Russian</button>
+      <button class="lang-btn active" onclick="closeSettings()">English</button>
+      <br><br>
+      <button class="close-btn" onclick="closeSettings()">Close</button>
+    </div>
+  </div>
+
   <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
@@ -66,6 +78,14 @@
     } else {
       const user = tg.initDataUnsafe?.user || {};
       document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/52/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
+    }
+
+    function openSettings() {
+      document.getElementById('settingsModal').style.display = 'flex';
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
     }
   </script>
 </body>
