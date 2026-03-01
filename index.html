@@ -6,36 +6,151 @@
   <title>TON Казик</title>
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; background: #0d1117; color: white; text-align: center; padding: 30px; margin: 0; }
-    h1 { color: #00ff88; }
-    button { padding: 15px 40px; font-size: 20px; margin: 15px; background: #00ff88; color: black; border: none; border-radius: 12px; cursor: pointer; }
-    button:hover { background: #00cc66; }
-    #status { font-size: 18px; margin-top: 20px; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: white;
+      overflow-x: hidden;
+    }
+    .header {
+      background: #161b22;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #30363d;
+    }
+    .balance {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(88, 101, 242, 0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+    .balance span { font-weight: bold; color: #a78bfa; }
+    .topup { background: #00ff88; color: black; padding: 8px 16px; border-radius: 20px; font-weight: bold; border: none; cursor: pointer; }
+    
+    .live-tabs {
+      display: flex;
+      overflow-x: auto;
+      padding: 12px 0;
+      gap: 12px;
+      background: #0d1117;
+    }
+    .tab {
+      background: rgba(0, 255, 136, 0.15);
+      color: #00ff88;
+      padding: 8px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      font-weight: bold;
+      border: 1px solid #00ff88;
+      cursor: pointer;
+    }
+    
+    .banner {
+      margin: 16px;
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .banner h2 { margin: 0; font-size: 24px; }
+    .multipliers { position: absolute; top: 10px; right: 10px; color: white; font-size: 14px; }
+    
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-size: 12px;
+    }
+    .nav-item { text-align: center; cursor: pointer; color: #8b949e; }
+    .nav-item.active { color: white; }
+    
+    .cases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 16px;
+      margin-bottom: 80px;
+    }
+    .case-card {
+      background: #1f2937;
+      border-radius: 12px;
+      overflow: hidden;
+      text-align: center;
+      padding: 12px;
+    }
+    .case-card img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; }
   </style>
 </head>
 <body>
-  <h1>Привет! Это твой TON-казик</h1>
-  <button id="connect">Подключить кошелёк</button>
-  <p id="status">Статус: ждём подключения...</p>
+
+  <div class="header">
+    <div class="balance">
+      <span>Ваш баланс</span>
+      <strong>0.000 TON</strong>
+    </div>
+    <button class="topup">Пополнить</button>
+  </div>
+
+  <div class="live-tabs">
+    <div class="tab">Live</div>
+    <div class="tab">💎</div>
+    <div class="tab">💎</div>
+    <div class="tab">💎</div>
+    <div class="tab">💎</div>
+    <div class="tab">💎</div>
+  </div>
+
+  <div class="banner">
+    <h2>РАКЕТКА</h2>
+    <p>ХИТ! x4.05</p>
+    <div class="multipliers">
+      x1.06 • x3.0 • x4.05
+    </div>
+    <!-- Тут можно вставить гифку ракеты позже -->
+  </div>
+
+  <!-- Место для PVP, контрактов и т.д. -->
+
+  <div class="cases">
+    <div class="case-card">
+      <img src="https://via.placeholder.com/300x180/FFD700/000?text=FREE24" alt="FREE24">
+      <p>FREE24</p>
+    </div>
+    <div class="case-card">
+      <img src="https://via.placeholder.com/300x180/FF69B4/000?text=FREE" alt="FREE">
+      <p>FREE</p>
+    </div>
+    <!-- Добавь ещё карточки по аналогии -->
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item">Инвентарь</div>
+    <div class="nav-item">Пригласить</div>
+    <div class="nav-item active">Главная</div>
+    <div class="nav-item">Рейтинг</div>
+    <div class="nav-item">Награды</div>
+  </div>
 
   <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
-    tg.expand(); // растягивает на весь экран
+    tg.expand();
 
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://ton-kazik-12345.netlify.app/tonconnect-manifest.json' // потом замени на свою ссылку
-    });
-
-    document.getElementById('connect').onclick = async () => {
-      try {
-        await tonConnectUI.connectWallet();
-        document.getElementById('status').innerText = 'Кошелёк подключён! Баланс: ждём...';
-        // тут потом добавим баланс
-      } catch (e) {
-        document.getElementById('status').innerText = 'Ошибка: ' + e.message;
-      }
-    };
+    // Подключение TON (добавь кнопку, если хочешь)
+    // const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({ manifestUrl: 'https://твоя-ссылка.netlify.app/tonconnect-manifest.json' });
   </script>
 </body>
 </html>
