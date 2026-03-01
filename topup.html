@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuckyChainss – Пополнение баланса</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: white;
+      overflow-x: hidden;
+      padding-bottom: 90px;
+    }
+    .header {
+      background: #161b22;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #30363d;
+    }
+    .back-btn {
+      font-size: 24px;
+      color: #8b949e;
+      cursor: pointer;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .balance-section {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+    .balance-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .balance-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .balance-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #a78bfa;
+    }
+    .topup-btn {
+      background: #a78bfa;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .tabs {
+      display: flex;
+      margin: 16px;
+      background: #1f2937;
+      border-radius: 30px;
+      overflow: hidden;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: #8b949e;
+    }
+    .tab-btn.active {
+      background: #a78bfa;
+      color: black;
+    }
+    .tab-content {
+      padding: 16px;
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .amount-input {
+      background: #1f2937;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 18px;
+      color: white;
+      width: 100%;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .quick-amounts {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 16px 0;
+    }
+    .quick-btn {
+      background: #30363d;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .main-topup-btn {
+      background: #a78bfa;
+      color: black;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 24px;
+    }
+    .gift-instruction {
+      background: #1f2937;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .step {
+      margin: 16px 0;
+      font-size: 16px;
+    }
+    .step-number {
+      background: #a78bfa;
+      color: black;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 12px;
+    }
+    .open-bot-btn {
+      background: #a78bfa;
+      color: black;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      width: 100%;
+      cursor: pointer;
+      margin: 24px 0;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-size: 12px;
+    }
+    .nav-item {
+      text-align: center;
+      cursor: pointer;
+      color: #8b949e;
+    }
+    .nav-item.active {
+      color: #a78bfa;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="back-btn" onclick="history.back()">←</div>
+    <div class="title">Пополнение баланса</div>
+    <div></div>
+  </div>
+
+  <div class="balance-section">
+    <div class="balance-info">
+      <div class="balance-icon">💎</div>
+      <div>
+        <div>Ваш баланс</div>
+        <div class="balance-value">0.000</div>
+      </div>
+    </div>
+    <button class="topup-btn">Пополнить</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="openTab('ton')">TON</button>
+    <button class="tab-btn" onclick="openTab('crypto')">Крипто Бот</button>
+    <button class="tab-btn" onclick="openTab('gifts')">Подарки</button>
+  </div>
+
+  <div id="ton" class="tab-content active">
+    <div style="padding:20px; text-align:center;">
+      <p>Сумма (минимум 0.1 TON)</p>
+      <input type="number" class="amount-input" placeholder="Введите сумму..." min="0.1" step="0.1">
+      <div class="quick-amounts">
+        <button class="quick-btn" onclick="setAmount(1)">+1 TON</button>
+        <button class="quick-btn" onclick="setAmount(10)">+10 TON</button>
+        <button class="quick-btn" onclick="setAmount(100)">+100 TON</button>
+      </div>
+      <button class="main-topup-btn">Пополнить</button>
+    </div>
+  </div>
+
+  <div id="crypto" class="tab-content">
+    <div style="text-align:center; padding:60px 16px; color:#8b949e;">
+      Пополнение через крипто-бота<br>Скоро будет доступно
+    </div>
+  </div>
+
+  <div id="gifts" class="tab-content">
+    <div class="gift-instruction">
+      <h3 style="text-align:center; color:#a78bfa; margin-bottom:20px;">Пополнить подарками</h3>
+      <p style="text-align:center; margin-bottom:24px;">Отправьте подарки нашему боту, и они появятся в вашем инвентаре</p>
+
+      <div class="step">
+        <span class="step-number">1</span>
+        Откройте бота подарков<br>
+        Нажмите кнопку ниже, чтобы открыть бота @giftbackpack
+      </div>
+
+      <div class="step">
+        <span class="step-number">2</span>
+        Отправьте подарок<br>
+        Отправьте подарок напрямую боту.
+      </div>
+
+      <div class="step">
+        <span class="step-number">3</span>
+        Подарок добавлен в инвентарь<br>
+        Ваш подарок появится в инвентаре в течение нескольких секунд. Затем вы можете быстро продать его за баланс TON!
+      </div>
+
+      <button class="open-bot-btn">Открыть @giftbackpack</button>
+
+      <div style="margin-top:20px; color:#a78bfa;">
+        <p>После отправки подарков:</p>
+        <p>Проверьте <strong>Инвентарь</strong>, чтобы быстро продать за баланс TON.<br>Нужна помощь? Свяжитесь с @epic_gift_support</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='inventory.html'">Инвентарь</div>
+    <div class="nav-item" onclick="window.location.href='invite.html'">Пригласить</div>
+    <div class="nav-item" onclick="window.location.href='index.html'">Главная</div>
+    <div class="nav-item" onclick="window.location.href='rating.html'">Рейтинг</div>
+    <div class="nav-item active" onclick="window.location.href='rewards.html'">Награды</div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    function openTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`button[onclick="openTab('${tabId}')"]`).classList.add('active');
+    }
+
+    function setAmount(value) {
+      document.querySelector('.amount-input').value = value;
+    }
+
+    // Открытие бота подарков (можно заменить на реальную ссылку)
+    document.querySelector('.open-bot-btn').addEventListener('click', () => {
+      tg.openTelegramLink('https://t.me/giftbackpack');
+    });
+  </script>
+</body>
+</html>
