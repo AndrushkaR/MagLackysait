@@ -3,142 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LuckyChainss – TON Казик</title>
+  <title>LuckyChainss – Тест языка</title>
   <style>
-    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0d1117; color:white; overflow-x:hidden; }
-    .header { background:#161b22; padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #30363d; }
-    .avatar-container { position:relative; width:52px; height:52px; }
-    .avatar { width:100%; height:100%; border-radius:50%; object-fit:cover; border:3px solid #FFD700; }
-    .settings-badge { position:absolute; bottom:-4px; right:-4px; width:26px; height:26px; background:#161b22; border:3px solid #FFD700; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; transition:0.2s; }
-    .settings-badge:hover { transform:scale(1.2); background:#2d3748; }
-    .logo { font-size:24px; font-weight:bold; color:#FFD700; text-shadow:0 0 10px #FFD70080; flex:1; }
-    .balance { background:rgba(167,139,250,0.2); padding:8px 14px; border-radius:20px; font-size:15px; }
-    .balance strong { color:#A78BFA; }
-    .connect-btn { background:#FFD700; color:black; padding:14px 24px; border-radius:20px; font-weight:bold; border:none; cursor:pointer; width:90%; margin:16px auto; display:block; font-size:18px; }
-    .live-tabs { display:flex; overflow-x:auto; padding:12px 0; gap:12px; background:#0d1117; }
-    .tab { background:rgba(255,215,0,0.15); color:#FFD700; padding:8px 18px; border-radius:20px; white-space:nowrap; font-weight:bold; border:1px solid #FFD700; cursor:pointer; }
-    .banner { margin:16px; background:linear-gradient(135deg,#4B0082,#8A2BE2); border-radius:16px; padding:24px; text-align:center; position:relative; }
-    .banner h2 { margin:0; font-size:28px; color:#FFD700; }
-    .cases { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:16px; margin-bottom:90px; }
-    .case-card { background:#1f2937; border-radius:12px; overflow:hidden; text-align:center; padding:12px; border:1px solid #FFD70050; }
-    .case-card img { width:100%; height:140px; object-fit:cover; border-radius:8px; }
-    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#161b22; border-top:1px solid #30363d; display:flex; justify-content:space-around; padding:10px 0; font-size:12px; }
-    .nav-item { text-align:center; cursor:pointer; color:#8b949e; }
-    .nav-item.active { color:#FFD700; font-weight:bold; }
-    #settingsModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
-    .modal-content { background:#1f2937; padding:28px; border-radius:16px; width:85%; max-width:340px; text-align:center; border:1px solid #FFD70040; }
-    .modal-content h3 { color:#FFD700; margin:0 0 20px; font-size:22px; }
-    .lang-btn { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; min-width:120px; }
-    .lang-btn.active { background:#FFD700; color:black; font-weight:bold; }
-    .close-btn { margin-top:20px; background:#FF5555; color:white; border:none; padding:12px 32px; border-radius:12px; cursor:pointer; font-size:16px; }
+    body { margin:0; background:#0d1117; color:white; font-family:Arial,sans-serif; text-align:center; padding:20px; }
+    .header { background:#161b22; padding:20px; margin:-20px -20px 30px; }
+    .logo { font-size:28px; color:#FFD700; }
+    .settings-badge { font-size:24px; cursor:pointer; }
+    #settingsModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000; align-items:center; justify-content:center; }
+    .modal-content { background:#1f2937; padding:40px; border-radius:20px; width:80%; }
+    .lang-btn { padding:15px 30px; margin:10px; font-size:18px; border-radius:12px; border:none; cursor:pointer; }
+    .lang-btn.ru { background:#FFD700; color:black; }
+    .lang-btn.en { background:#30363d; color:white; }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <div class="avatar-container">
-      <img id="userAvatar" class="avatar" src="https://via.placeholder.com/52?text=AVA" alt="Avatar">
-      <div class="settings-badge" onclick="openSettings()">⚙️</div>
-    </div>
-    <div class="logo" data-key="logo">LuckyChainss</div>
-    <div class="balance">
-      <strong id="tonBalance">0.000</strong> <span data-key="ton">TON</span>
-    </div>
+    <span class="settings-badge" onclick="openSettings()">⚙️</span>
+    <div class="logo" id="logoText" data-key="logo">LuckyChainss</div>
   </div>
 
-  <button class="connect-btn" id="connectWallet" data-key="connectWallet">Подключить TON-кошелёк</button>
-
-  <div class="live-tabs">
-    <div class="tab" data-key="live">Live</div>
-    <div class="tab">💎</div>
-    <div class="tab">💎</div>
-    <div class="tab" data-key="lucky">Lucky</div>
-    <div class="tab" data-key="chain">Chain</div>
-  </div>
-
-  <div class="banner">
-    <h2 data-key="bannerTitle">LuckyChainss</h2>
-    <p data-key="bannerText">Цепочка удачи начинается здесь! 🚀🔗</p>
-    <div style="font-size:32px;margin:10px 0;">🔗 x4.05 • x3.0 • x1.85 🔗</div>
-  </div>
-
-  <div class="cases">
-    <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FFD700/000?text=FREE24" alt="FREE24">
-      <p data-key="free24">FREE24</p>
-    </div>
-    <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FF69B4/000?text=EPIC+FREE" alt="FREE">
-      <p data-key="epicFree">EPIC FREE</p>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item" data-key="inventory">Инвентарь</div>
-    <div class="nav-item" data-key="invite">Пригласить</div>
-    <div class="nav-item active" data-key="home">Главная</div>
-    <div class="nav-item" data-key="rating">Рейтинг</div>
-    <div class="nav-item" data-key="rewards">Награды</div>
-  </div>
+  <p id="testText" data-key="test">Это текст для теста смены языка</p>
 
   <!-- Модалка -->
   <div id="settingsModal">
     <div class="modal-content">
-      <h3 data-key="settings">Настройки</h3>
+      <h2 data-key="settings">Настройки</h2>
       <p data-key="selectLanguage">Выберите язык:</p>
-      <button class="lang-btn active" onclick="setLanguage('ru')">Русский</button>
-      <button class="lang-btn" onclick="setLanguage('en')">English</button>
+      <button class="lang-btn ru" onclick="setLanguage('ru')">Русский</button>
+      <button class="lang-btn en" onclick="setLanguage('en')">English</button>
       <br><br>
-      <button class="close-btn" onclick="closeSettings()">Закрыть</button>
+      <button onclick="closeSettings()" style="padding:12px 30px; background:#FF5555; color:white; border:none; border-radius:12px;">Закрыть</button>
     </div>
   </div>
 
   <script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
-
-    // Аватарка
-    const user = tg.initDataUnsafe?.user || {};
-    document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/52/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
+    console.log('✅ Скрипт загружен');
 
     function openSettings() {
+      console.log('⚙️ Открываем модалку');
       document.getElementById('settingsModal').style.display = 'flex';
     }
+
     function closeSettings() {
       document.getElementById('settingsModal').style.display = 'none';
     }
 
-    // Переводы
     const translations = {
-      ru: { logo:"LuckyChainss", ton:"TON", connectWallet:"Подключить TON-кошелёк", connected:"Кошелёк подключён!", live:"Live", lucky:"Lucky", chain:"Chain", bannerTitle:"LuckyChainss", bannerText:"Цепочка удачи начинается здесь! 🚀🔗", free24:"FREE24", epicFree:"EPIC FREE", inventory:"Инвентарь", invite:"Пригласить", home:"Главная", rating:"Рейтинг", rewards:"Награды", settings:"Настройки", selectLanguage:"Выберите язык:" },
-      en: { logo:"LuckyChainss", ton:"TON", connectWallet:"Connect TON Wallet", connected:"Wallet connected!", live:"Live", lucky:"Lucky", chain:"Chain", bannerTitle:"LuckyChainss", bannerText:"The chain of luck starts here! 🚀🔗", free24:"FREE24", epicFree:"EPIC FREE", inventory:"Inventory", invite:"Invite", home:"Home", rating:"Rating", rewards:"Rewards", settings:"Settings", selectLanguage:"Select language:" }
+      ru: { logo: "LuckyChainss", test: "Это текст для теста смены языка", settings: "Настройки", selectLanguage: "Выберите язык:" },
+      en: { logo: "LuckyChainss", test: "This is a language switch test", settings: "Settings", selectLanguage: "Select language:" }
     };
 
     let currentLang = localStorage.getItem('lang') || 'ru';
 
     function setLanguage(lang) {
+      console.log('🖱️ Клик по языку:', lang);
+      alert('✅ КНОПКА СРАБОТАЛА!\nЯзык: ' + lang.toUpperCase());
+
       currentLang = lang;
       localStorage.setItem('lang', lang);
-      document.documentElement.lang = lang;
-
-      alert('✅ ЯЗЫК СМЕНЁН НА: ' + lang.toUpperCase() + '\nСейчас обновлю всю страницу!'); // отладка
 
       document.querySelectorAll('[data-key]').forEach(el => {
         const key = el.dataset.key;
-        if (translations[lang][key]) el.textContent = translations[lang][key];
-      });
-
-      // подсветка активной кнопки
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('onclick').includes("'" + lang + "'"));
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
       });
 
       closeSettings();
     }
 
     // Инициализация
-    setLanguage(currentLang);
+    console.log('Текущий язык:', currentLang);
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.dataset.key;
+      if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
+    });
   </script>
 </body>
 </html>
