@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LuckyChainss – TON Casino</title>
   <style>
-    /* Точно тот же CSS, что в русской версии — скопируй полностью из index.html выше */
+    /* ТОТ ЖЕ САМЫЙ CSS — копируй полностью из русской версии выше */
     body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0d1117; color:white; overflow-x:hidden; }
     .header { background:#161b22; padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #30363d; }
     .avatar-container { position:relative; width:52px; height:52px; }
@@ -30,7 +30,10 @@
     #settingsModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
     .modal-content { background:#1f2937; padding:28px; border-radius:16px; width:90%; max-width:360px; text-align:center; border:1px solid #FFD70040; }
     .modal-content h3 { color:#FFD700; margin:0 0 20px; font-size:22px; }
-    .lang-btn { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; min-width:120px; }
+    .lang-btn, .avatar-option { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; min-width:120px; }
+    .avatar-option { padding:0; width:80px; height:80px; border-radius:50%; overflow:hidden; border:3px solid transparent; }
+    .avatar-option img { width:100%; height:100%; object-fit:cover; }
+    .avatar-option.selected { border-color:#FFD700; }
     .lang-btn.active { background:#FFD700; color:black; font-weight:bold; }
     .close-btn { margin-top:20px; background:#FF5555; color:white; border:none; padding:12px 32px; border-radius:12px; cursor:pointer; font-size:16px; }
   </style>
@@ -90,60 +93,83 @@
       <button class="lang-btn" onclick="window.location.href='index.html'">Russian</button>
       <button class="lang-btn active" onclick="closeSettings()">English</button>
       <br><br>
+      <button class="lang-btn" onclick="openAvatarModal()">Change Avatar</button>
+      <br><br>
       <button class="close-btn" onclick="closeSettings()">Close</button>
     </div>
   </div>
 
- <script>
-  const tg = window.Telegram.WebApp;
-  tg.ready();
-  tg.expand();
+  <!-- Avatar Selection Modal -->
+  <div id="avatarModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1001; align-items:center; justify-content:center;">
+    <div class="modal-content">
+      <h3>Choose Avatar</h3>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:20px 0;">
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar1.png')"><img src="avatars/avatar1.png" alt="Avatar 1"></div>
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar2.png')"><img src="avatars/avatar2.png" alt="Avatar 2"></div>
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar3.png')"><img src="avatars/avatar3.png" alt="Avatar 3"></div>
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar4.png')"><img src="avatars/avatar4.png" alt="Avatar 4"></div>
+        <div class="avatar-option" onclick="selectAvatar('avatars/avatar5.png')"><img src="avatars/avatar5.png" alt="Avatar 5"></div>
+      </div>
+      <button class="close-btn" onclick="closeAvatarModal()">Close</button>
+    </div>
+  </div>
 
-  const avatarElement = document.getElementById('userAvatar');
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
 
-  // Список доступных аватарок
-  const defaultAvatars = [
-    'avatars/avatar1.png',
-    'avatars/avatar2.png',
-    'avatars/avatar3.png',
-    'avatars/avatar4.png',
-    'avatars/avatar5.png'
-  ];
+    const avatarElement = document.getElementById('userAvatar');
 
-  // Пытаемся взять сохранённую
-  let savedAvatar = localStorage.getItem('selectedAvatar');
+    // Список доступных аватарок
+    const defaultAvatars = [
+      'avatars/avatar1.png',
+      'avatars/avatar2.png',
+      'avatars/avatar3.png',
+      'avatars/avatar4.png',
+      'avatars/avatar5.png'
+    ];
 
-  if (savedAvatar) {
-    // Если есть сохранённая — используем её
-    avatarElement.src = savedAvatar;
-  } else {
-    // Если нет — ставим случайную из списка
-    const randomIndex = Math.floor(Math.random() * defaultAvatars.length);
-    const randomAvatar = defaultAvatars[randomIndex];
-    avatarElement.src = randomAvatar;
-    localStorage.setItem('selectedAvatar', randomAvatar); // сразу сохраняем, чтобы не менялась каждый раз
-  }
+    let savedAvatar = localStorage.getItem('selectedAvatar');
 
-  // Если у пользователя есть фото в Telegram — можно переопределить (опционально)
-  const user = tg.initDataUnsafe?.user || {};
-  if (user.photo_url) {
-    avatarElement.src = user.photo_url;
-    localStorage.setItem('selectedAvatar', user.photo_url);
-  }
+    if (savedAvatar) {
+      avatarElement.src = savedAvatar;
+    } else {
+      // Фиксированная аватарка по умолчанию (можно изменить на любую)
+      const defaultAvatar = 'avatars/avatar1.png'; // ← твоя любимая аватарка при первом заходе
+      avatarElement.src = defaultAvatar;
+      localStorage.setItem('selectedAvatar', defaultAvatar);
+    }
 
-  function openSettings() {
-    document.getElementById('settingsModal').style.display = 'flex';
-  }
+    // Если у пользователя есть фото в Telegram — используем его (опционально)
+    const user = tg.initDataUnsafe?.user || {};
+    if (user.photo_url) {
+      avatarElement.src = user.photo_url;
+      localStorage.setItem('selectedAvatar', user.photo_url);
+    }
 
-  function closeSettings() {
-    document.getElementById('settingsModal').style.display = 'none';
-  }
+    function openSettings() {
+      document.getElementById('settingsModal').style.display = 'flex';
+    }
 
-  function selectAvatar(src) {
-    avatarElement.src = src;
-    localStorage.setItem('selectedAvatar', src);
-    closeSettings(); // или closeAvatarModal(), если у тебя отдельная модалка аватарок
-  }
-</script>
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function openAvatarModal() {
+      closeSettings();
+      document.getElementById('avatarModal').style.display = 'flex';
+    }
+
+    function closeAvatarModal() {
+      document.getElementById('avatarModal').style.display = 'none';
+    }
+
+    function selectAvatar(src) {
+      avatarElement.src = src;
+      localStorage.setItem('selectedAvatar', src);
+      closeAvatarModal();
+    }
+  </script>
 </body>
 </html>
