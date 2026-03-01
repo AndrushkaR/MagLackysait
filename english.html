@@ -41,7 +41,7 @@
 
   <div class="header">
     <div class="avatar-container">
-      <img id="userAvatar" class="avatar" src="avatars/default-avatar.png" alt="Avatar">
+      <img id="userAvatar" class="avatar" src="avatars/avatar1.png" alt="Avatar">
       <div class="settings-badge" onclick="openSettings()">⚙️</div>
     </div>
     <div class="logo">LuckyChainss</div>
@@ -120,7 +120,8 @@
 
     const avatarElement = document.getElementById('userAvatar');
 
-    const defaultAvatar = 'avatars/default-avatar.png';
+    // При первом заходе — всегда первая аватарка
+    const defaultAvatar = 'avatars/avatar1.png';
 
     let savedAvatar = localStorage.getItem('selectedAvatar');
 
@@ -129,12 +130,6 @@
     } else {
       avatarElement.src = defaultAvatar;
       localStorage.setItem('selectedAvatar', defaultAvatar);
-    }
-
-    const user = tg.initDataUnsafe?.user || {};
-    if (user.photo_url) {
-      avatarElement.src = user.photo_url;
-      localStorage.setItem('selectedAvatar', user.photo_url);
     }
 
     function openSettings() {
