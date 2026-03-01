@@ -26,7 +26,7 @@
     .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#161b22; border-top:1px solid #30363d; display:flex; justify-content:space-around; padding:10px 0; font-size:12px; }
     .nav-item { text-align:center; cursor:pointer; color:#8b949e; }
     .nav-item.active { color:#FFD700; font-weight:bold; }
-    #settingsModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
+    #settingsModal, #avatarModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
     .modal-content { background:#1f2937; padding:28px; border-radius:16px; width:90%; max-width:360px; text-align:center; border:1px solid #FFD70040; }
     .modal-content h3 { color:#FFD700; margin:0 0 20px; font-size:22px; }
     .lang-btn, .avatar-option { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; min-width:120px; }
@@ -41,7 +41,7 @@
 
   <div class="header">
     <div class="avatar-container">
-      <img id="userAvatar" class="avatar" src="https://via.placeholder.com/52?text=AVA" alt="Avatar">
+      <img id="userAvatar" class="avatar" src="avatars/default-avatar.png" alt="Avatar"> <!-- ← здесь по умолчанию -->
       <div class="settings-badge" onclick="openSettings()">⚙️</div>
     </div>
     <div class="logo">LuckyChainss</div>
@@ -99,7 +99,7 @@
   </div>
 
   <!-- Модалка выбора аватарки -->
-  <div id="avatarModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1001; align-items:center; justify-content:center;">
+  <div id="avatarModal">
     <div class="modal-content">
       <h3>Выберите аватарку</h3>
       <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:20px 0;">
@@ -120,27 +120,19 @@
 
     const avatarElement = document.getElementById('userAvatar');
 
-    // Список доступных аватарок
-    const defaultAvatars = [
-      'avatars/avatar1.png',
-      'avatars/avatar2.png',
-      'avatars/avatar3.png',
-      'avatars/avatar4.png',
-      'avatars/avatar5.png'
-    ];
+    // Фиксированная аватарка по умолчанию при первом заходе
+    const defaultAvatar = 'avatars/default-avatar.png'; // ← поменяй на свою любимую, если хочешь
 
     let savedAvatar = localStorage.getItem('selectedAvatar');
 
     if (savedAvatar) {
       avatarElement.src = savedAvatar;
     } else {
-      // Если нет сохранённой — ставим фиксированную (можно изменить на любую)
-      const defaultAvatar = 'avatars/avatar1.png'; // ← здесь твоя любимая аватарка по умолчанию
       avatarElement.src = defaultAvatar;
       localStorage.setItem('selectedAvatar', defaultAvatar);
     }
 
-    // Если у пользователя есть фото в Telegram — можно переопределить (опционально)
+    // Если есть фото в Telegram — используем его (можно удалить, если не нужно)
     const user = tg.initDataUnsafe?.user || {};
     if (user.photo_url) {
       avatarElement.src = user.photo_url;
