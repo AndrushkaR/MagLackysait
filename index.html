@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LuckyChainss – TON Казик</title>
+  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <style>
     body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0d1117; color:white; overflow-x:hidden; }
     .header { background:#161b22; padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #30363d; }
@@ -15,6 +16,7 @@
     .balance { background:rgba(167,139,250,0.2); padding:8px 14px; border-radius:20px; font-size:15px; }
     .balance strong { color:#A78BFA; }
     .connect-btn { background:#FFD700; color:black; padding:14px 24px; border-radius:20px; font-weight:bold; border:none; cursor:pointer; width:90%; margin:16px auto; display:block; font-size:18px; }
+    .connect-btn:disabled { background:#00ff88; color:#111; }
     .live-tabs { display:flex; overflow-x:auto; padding:12px 0; gap:12px; background:#0d1117; }
     .tab { background:rgba(255,215,0,0.15); color:#FFD700; padding:8px 18px; border-radius:20px; white-space:nowrap; font-weight:bold; border:1px solid #FFD700; cursor:pointer; }
     .banner { margin:16px; background:linear-gradient(135deg,#4B0082,#8A2BE2); border-radius:16px; padding:24px; text-align:center; position:relative; }
@@ -40,54 +42,54 @@
       <img id="userAvatar" class="avatar" src="https://via.placeholder.com/52?text=AVA" alt="Avatar">
       <div class="settings-badge" onclick="openSettings()">⚙️</div>
     </div>
-    <div class="logo" data-key="logo">LuckyChainss</div>
+    <div class="logo">LuckyChainss</div>
     <div class="balance">
-      <strong id="tonBalance">0.000</strong> <span data-key="ton">TON</span>
+      <strong id="tonBalance">0.000</strong> TON
     </div>
   </div>
 
-  <button class="connect-btn" id="connectWallet" data-key="connectWallet">Подключить TON-кошелёк</button>
+  <button class="connect-btn" id="connectWallet">Подключить TON-кошелёк</button>
 
   <div class="live-tabs">
-    <div class="tab" data-key="live">Live</div>
+    <div class="tab">Live</div>
     <div class="tab">💎</div>
     <div class="tab">💎</div>
-    <div class="tab" data-key="lucky">Lucky</div>
-    <div class="tab" data-key="chain">Chain</div>
+    <div class="tab">Lucky</div>
+    <div class="tab">Chain</div>
   </div>
 
   <div class="banner">
-    <h2 data-key="bannerTitle">LuckyChainss</h2>
-    <p data-key="bannerText">Цепочка удачи начинается здесь! 🚀🔗</p>
+    <h2>LuckyChainss</h2>
+    <p>Цепочка удачи начинается здесь! 🚀🔗</p>
     <div style="font-size:32px;margin:10px 0;">🔗 x4.05 • x3.0 • x1.85 🔗</div>
   </div>
 
   <div class="cases">
     <div class="case-card">
       <img src="https://via.placeholder.com/300x180/FFD700/000?text=FREE24" alt="FREE24">
-      <p data-key="free24">FREE24</p>
+      <p>FREE24</p>
     </div>
     <div class="case-card">
       <img src="https://via.placeholder.com/300x180/FF69B4/000?text=EPIC+FREE" alt="FREE">
-      <p data-key="epicFree">EPIC FREE</p>
+      <p>EPIC FREE</p>
     </div>
   </div>
 
   <div class="bottom-nav">
-    <div class="nav-item" data-key="inventory">Инвентарь</div>
-    <div class="nav-item" data-key="invite">Пригласить</div>
-    <div class="nav-item active" data-key="home">Главная</div>
-    <div class="nav-item" data-key="rating">Рейтинг</div>
-    <div class="nav-item" data-key="rewards">Награды</div>
+    <div class="nav-item">Инвентарь</div>
+    <div class="nav-item">Пригласить</div>
+    <div class="nav-item active">Главная</div>
+    <div class="nav-item">Рейтинг</div>
+    <div class="nav-item">Награды</div>
   </div>
 
   <!-- Модалка настроек -->
   <div id="settingsModal">
     <div class="modal-content">
-      <h3 data-key="settings">Настройки</h3>
-      <p data-key="selectLanguage">Выберите язык:</p>
-      <button class="lang-btn active" onclick="setLanguage('ru')">Русский</button>
-      <button class="lang-btn" onclick="setLanguage('en')">English</button>
+      <h3>Настройки</h3>
+      <p>Выберите язык:</p>
+      <button class="lang-btn active" onclick="closeSettings()">Русский</button>
+      <button class="lang-btn" onclick="switchToEnglish()">English</button>
       <br><br>
       <button class="close-btn" onclick="closeSettings()">Закрыть</button>
     </div>
@@ -105,61 +107,8 @@
     function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
     function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
 
-    // Переводы
-    const translations = {
-      ru: { logo:"LuckyChainss", ton:"TON", connectWallet:"Подключить TON-кошелёк", connected:"Кошелёк подключён!", live:"Live", lucky:"Lucky", chain:"Chain", bannerTitle:"LuckyChainss", bannerText:"Цепочка удачи начинается здесь! 🚀🔗", free24:"FREE24", epicFree:"EPIC FREE", inventory:"Инвентарь", invite:"Пригласить", home:"Главная", rating:"Рейтинг", rewards:"Награды", settings:"Настройки", selectLanguage:"Выберите язык:" },
-      en: { logo:"LuckyChainss", ton:"TON", connectWallet:"Connect TON Wallet", connected:"Wallet connected!", live:"Live", lucky:"Lucky", chain:"Chain", bannerTitle:"LuckyChainss", bannerText:"The chain of luck starts here! 🚀🔗", free24:"FREE24", epicFree:"EPIC FREE", inventory:"Inventory", invite:"Invite", home:"Home", rating:"Rating", rewards:"Rewards", settings:"Settings", selectLanguage:"Select language:" }
-    };
-
-    let currentLang = 'ru';
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      alert('✅ Выбрал ' + lang.toUpperCase() + '. Сохраняю и перезагружаю страницу...');
-
-      tg.CloudStorage.setItem('lang', lang, (error, success) => {
-        if (success) {
-          alert('✅ Сохранено в CloudStorage!');
-        } else {
-          alert('❌ Ошибка сохранения: ' + (error || 'Неизвестно'));
-        }
-      });
-
-      // Перезагрузка страницы с параметром ?lang=lang
-      const newUrl = window.location.pathname + '?lang=' + lang;
-      window.location.href = newUrl;
-    }
-
-    // Инициализация языка
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlLang = urlParams.get('lang');
-    if (urlLang && translations[urlLang]) {
-      currentLang = urlLang;
-      alert('✅ Загружен язык из URL: ' + currentLang.toUpperCase());
-    } else {
-      tg.CloudStorage.getItem('lang', (error, value) => {
-        if (value) {
-          currentLang = value;
-          alert('✅ Загружен язык из CloudStorage: ' + currentLang.toUpperCase());
-        } else {
-          alert('Нет сохранённого языка — RU по умолчанию');
-        }
-        applyLanguage();
-      });
-      return; // Ждём callback
-    }
-
-    applyLanguage();
-
-    function applyLanguage() {
-      document.querySelectorAll('[data-key]').forEach(el => {
-        const key = el.dataset.key;
-        if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
-      });
-
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('onclick').includes("'" + currentLang + "'"));
-      });
+    function switchToEnglish() {
+      window.location.href = 'english.html'; // Переход на английскую версию
     }
   </script>
 </body>
