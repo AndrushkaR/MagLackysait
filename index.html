@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LuckyChainss – TON Казик</title>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+  <title>LuckyChainss</title>
   <style>
     body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0d1117; color:white; overflow-x:hidden; }
     .header {
@@ -24,60 +23,22 @@
     .balance { background:rgba(167,139,250,0.2); padding:6px 12px; border-radius:20px; font-size:14px; }
     .balance strong { color:#A78BFA; }
 
-    .connect-btn {
-      background:#FFD700; color:black; padding:12px 24px; border-radius:20px;
-      font-weight:bold; border:none; cursor:pointer; width:90%; margin:16px auto; display:block; font-size:18px;
-    }
-    .connect-btn:disabled { background:#00ff88; color:#111; }
-
-    .live-tabs { display:flex; overflow-x:auto; padding:12px 0; gap:12px; background:#0d1117; }
-    .tab {
-      background:rgba(255,215,0,0.15); color:#FFD700; padding:8px 16px; border-radius:20px;
-      white-space:nowrap; font-weight:bold; border:1px solid #FFD700; cursor:pointer;
-    }
-
-    .banner {
-      margin:16px; background:linear-gradient(135deg,#4B0082,#8A2BE2); border-radius:16px;
-      padding:24px; text-align:center; position:relative;
-    }
-    .banner h2 { margin:0; font-size:28px; color:#FFD700; }
-
-    .cases {
-      display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:16px; margin-bottom:90px;
-    }
-    .case-card {
-      background:#1f2937; border-radius:12px; overflow:hidden; text-align:center; padding:12px;
-      border:1px solid #FFD70050;
-    }
-    .case-card img { width:100%; height:140px; object-fit:cover; border-radius:8px; }
-
-    .bottom-nav {
-      position:fixed; bottom:0; left:0; right:0; background:#161b22;
-      border-top:1px solid #30363d; display:flex; justify-content:space-around;
-      padding:10px 0; font-size:12px;
-    }
-    .nav-item { text-align:center; cursor:pointer; color:#8b949e; }
-    .nav-item.active { color:#FFD700; font-weight:bold; }
-
     /* Модалка */
     #settingsModal {
-      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:1000;
-      align-items:center; justify-content:center; backdrop-filter:blur(4px);
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000;
+      align-items:center; justify-content:center;
     }
     .modal-content {
-      background:#1f2937; padding:24px 20px; border-radius:16px; width:88%; max-width:340px;
-      text-align:center; border:1px solid #30363d;
+      background:#1f2937; padding:24px; border-radius:16px; width:85%; max-width:340px;
+      text-align:center; border:1px solid #FFD70040;
     }
-    .modal-content h3 { margin:0 0 20px; color:#FFD700; font-size:20px; }
+    .modal-content h3 { color:#FFD700; margin:0 0 20px; }
     .lang-btn {
-      background:#30363d; color:white; border:none; padding:12px 24px; margin:10px 6px;
+      background:#30363d; color:white; border:none; padding:12px 24px; margin:8px;
       border-radius:12px; cursor:pointer; font-size:16px; min-width:110px;
     }
     .lang-btn.active { background:#FFD700; color:black; font-weight:bold; }
-    .close-btn {
-      margin-top:16px; background:#FF5555; color:white; border:none; padding:10px 28px;
-      border-radius:12px; cursor:pointer; font-size:15px;
-    }
+    .close-btn { background:#FF5555; color:white; border:none; padding:10px 30px; border-radius:12px; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -89,43 +50,8 @@
     </div>
     <div class="logo">LuckyChainss</div>
     <div class="balance">
-      <strong id="tonBalance">0.000</strong> TON
+      <strong>0.000</strong> TON
     </div>
-  </div>
-
-  <button class="connect-btn" id="connectWallet" data-key="connectWallet">Подключить TON-кошелёк</button>
-
-  <div class="live-tabs">
-    <div class="tab">Live</div>
-    <div class="tab">💎</div>
-    <div class="tab">💎</div>
-    <div class="tab">Lucky</div>
-    <div class="tab">Chain</div>
-  </div>
-
-  <div class="banner">
-    <h2>LuckyChainss</h2>
-    <p>Цепочка удачи начинается здесь! 🚀🔗</p>
-    <div style="font-size:32px;margin:10px 0;">🔗 x4.05 • x3.0 • x1.85 🔗</div>
-  </div>
-
-  <div class="cases">
-    <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FFD700/000?text=FREE24" alt="FREE24">
-      <p>FREE24</p>
-    </div>
-    <div class="case-card">
-      <img src="https://via.placeholder.com/300x180/FF69B4/000?text=EPIC+FREE" alt="FREE">
-      <p>EPIC FREE</p>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item">Инвентарь</div>
-    <div class="nav-item">Пригласить</div>
-    <div class="nav-item active">Главная</div>
-    <div class="nav-item">Рейтинг</div>
-    <div class="nav-item">Награды</div>
   </div>
 
   <!-- Модалка настроек -->
@@ -141,16 +67,20 @@
   </div>
 
   <script>
+    console.log('✅ Страница загружена — скрипт работает');
+
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
 
-    // Аватарка
+    // Аватарка из Telegram
     const user = tg.initDataUnsafe?.user || {};
     document.getElementById('userAvatar').src = user.photo_url || `https://via.placeholder.com/48/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
 
-    // Шестерёнка
+    // Шестерёнка — главный обработчик
     document.getElementById('settingsTrigger').addEventListener('click', () => {
+      console.log('⚙️ Шестерёнка нажата!');
+      alert('✅ Шестерёнка РАБОТАЕТ!\nСейчас откроется окно настроек');
       document.getElementById('settingsModal').style.display = 'flex';
     });
 
@@ -158,20 +88,10 @@
       document.getElementById('settingsModal').style.display = 'none';
     }
 
-    // Переводы
+    // Смена языка (сохраняется навсегда)
     const translations = {
-      ru: {
-        settings: "Настройки",
-        selectLanguage: "Выберите язык:",
-        connectWallet: "Подключить TON-кошелёк",
-        connected: "Кошелёк подключён!"
-      },
-      en: {
-        settings: "Settings",
-        selectLanguage: "Select language:",
-        connectWallet: "Connect TON Wallet",
-        connected: "Wallet connected!"
-      }
+      ru: { settings: "Настройки", selectLanguage: "Выберите язык:" },
+      en: { settings: "Settings", selectLanguage: "Select language:" }
     };
 
     let currentLang = localStorage.getItem('lang') || 'ru';
@@ -186,48 +106,14 @@
         if (translations[lang][key]) el.textContent = translations[lang][key];
       });
 
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
-
-      const connectBtn = document.getElementById('connectWallet');
-      if (connectBtn.disabled) {
-        connectBtn.textContent = translations[lang].connected;
-      } else {
-        connectBtn.textContent = translations[lang].connectWallet;
-      }
-
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
       closeSettings();
     }
 
-    // Инициализация языка
     setLanguage(currentLang);
 
-    // Кнопки языка
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
-    });
-
-    // TON Connect
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://luckychainss.netlify.app/tonconnect-manifest.json'  // ← замени на свою реальную ссылку!
-    });
-
-    const connectButton = document.getElementById('connectWallet');
-    const balanceEl = document.getElementById('tonBalance');
-
-    connectButton.addEventListener('click', async () => {
-      try {
-        await tonConnectUI.connectWallet();
-        connectButton.textContent = translations[currentLang].connected;
-        connectButton.disabled = true;
-
-        const balanceNano = await tonConnectUI.getBalance();
-        const balanceTon = (Number(balanceNano) / 1_000_000_000).toFixed(4);
-        balanceEl.textContent = balanceTon;
-      } catch (e) {
-        alert('Ошибка: ' + e.message);
-      }
     });
   </script>
 </body>
