@@ -76,11 +76,11 @@
   </div>
 
   <div class="bottom-nav">
-    <div class="nav-item">Инвентарь</div>
-    <div class="nav-item">Пригласить</div>
+    <div class="nav-item" onclick="window.location.href='inventory.html'">Инвентарь</div>
+    <div class="nav-item" onclick="window.location.href='invite.html'">Пригласить</div>
     <div class="nav-item active">Главная</div>
-    <div class="nav-item">Рейтинг</div>
-    <div class="nav-item">Награды</div>
+    <div class="nav-item" onclick="window.location.href='rating.html'">Рейтинг</div>
+    <div class="nav-item" onclick="window.location.href='rewards.html'">Награды</div>
   </div>
 
   <!-- Модалка настроек -->
@@ -89,7 +89,7 @@
       <h3>Настройки</h3>
       <p>Выберите язык:</p>
       <button class="lang-btn active" onclick="closeSettings()">Русский</button>
-      <button class="lang-btn" onclick="switchToEnglish()">English</button>
+      <button class="lang-btn" onclick="window.location.href='english.html'">English</button>
       <br><br>
       <button class="close-btn" onclick="closeSettings()">Закрыть</button>
     </div>
@@ -106,10 +106,6 @@
 
     function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
     function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-
-    function switchToEnglish() {
-      window.location.href = 'english.html'; // Переход на английскую версию
-    }
   </script>
 </body>
 </html>
