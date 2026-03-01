@@ -25,7 +25,6 @@
       position: relative;
       width: 48px;
       height: 48px;
-      cursor: pointer;
     }
     .avatar {
       width: 100%;
@@ -38,15 +37,21 @@
       position: absolute;
       bottom: -4px;
       right: -4px;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       background: #161b22;
       border-radius: 50%;
       border: 2px solid #FFD700;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .settings-badge:hover {
+      transform: scale(1.15);
+      background: #2d3748;
     }
     .logo {
       font-size: 22px;
@@ -65,40 +70,62 @@
       font-size: 14px;
     }
     .balance strong { color: #A78BFA; }
-    
+
     /* Модалка настроек */
     #settingsModal {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.8);
+      inset: 0;
+      background: rgba(0,0,0,0.75);
       z-index: 1000;
       align-items: center;
       justify-content: center;
+      backdrop-filter: blur(4px);
     }
     .modal-content {
       background: #1f2937;
-      padding: 24px;
+      padding: 24px 20px;
       border-radius: 16px;
-      width: 90%;
-      max-width: 320px;
+      width: 88%;
+      max-width: 340px;
       text-align: center;
+      border: 1px solid #30363d;
     }
-    .modal-content h3 { margin: 0 0 16px; color: #FFD700; }
+    .modal-content h3 {
+      margin: 0 0 20px;
+      color: #FFD700;
+      font-size: 20px;
+    }
     .lang-btn {
       background: #30363d;
       color: white;
       border: none;
-      padding: 12px;
-      margin: 8px;
+      padding: 12px 24px;
+      margin: 10px 6px;
       border-radius: 12px;
-      width: 120px;
       cursor: pointer;
       font-size: 16px;
+      min-width: 110px;
+      transition: all 0.2s;
     }
-    .lang-btn.active { background: #FFD700; color: black; }
-    
-    /* Остальные стили как раньше */
+    .lang-btn:hover { background: #3d4759; }
+    .lang-btn.active {
+      background: #FFD700;
+      color: black;
+      font-weight: bold;
+    }
+    .close-btn {
+      margin-top: 16px;
+      background: #FF5555;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    /* Остальные стили (connect-btn, live-tabs, banner, cases, bottom-nav) — вставь из предыдущей версии */
     .connect-btn {
       background: #FFD700;
       color: black;
@@ -112,18 +139,15 @@
       display: block;
       font-size: 18px;
     }
-    .connect-btn:disabled { background: #00ff88; }
-    
-    .live-tabs, .banner, .cases, .bottom-nav { /* твои предыдущие стили */ }
-    /* ... (вставь сюда все остальные стили из прошлого кода: live-tabs, banner, cases, bottom-nav и т.д.) */
+    .connect-btn:disabled { background: #00ff88; color: #111; }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <div class="avatar-container" id="avatarContainer">
+    <div class="avatar-container">
       <img id="userAvatar" class="avatar" src="https://via.placeholder.com/48?text=AVA" alt="Avatar">
-      <div class="settings-badge">⚙️</div>
+      <div class="settings-badge" id="settingsTrigger">⚙️</div>
     </div>
     
     <div class="logo">LuckyChainss</div>
@@ -135,17 +159,19 @@
 
   <button class="connect-btn" id="connectWallet">Подключить TON-кошелёк</button>
 
-  <!-- Остальной контент: live-tabs, banner, cases, bottom-nav как в предыдущем коде -->
+  <!-- Здесь остальной контент: live-tabs, banner, cases, bottom-nav — как было раньше -->
 
   <!-- Модалка настроек -->
   <div id="settingsModal">
     <div class="modal-content">
       <h3 data-key="settings">Настройки</h3>
       <p data-key="selectLanguage">Выберите язык:</p>
-      <button class="lang-btn" data-lang="ru">Русский</button>
+      
+      <button class="lang-btn active" data-lang="ru">Русский</button>
       <button class="lang-btn" data-lang="en">English</button>
-      <br><br>
-      <button onclick="closeSettings()" style="background:#FF5555; color:white; padding:10px 20px; border:none; border-radius:12px; cursor:pointer;">Закрыть</button>
+      
+      <br>
+      <button class="close-btn" onclick="closeSettings()">Закрыть</button>
     </div>
   </div>
 
@@ -154,17 +180,13 @@
     tg.ready();
     tg.expand();
 
-    // Получаем данные пользователя из Telegram
-    const user = tg.initDataUnsafe.user || {};
+    // Аватарка пользователя
+    const user = tg.initDataUnsafe?.user || {};
     const avatarEl = document.getElementById('userAvatar');
-    if (user.photo_url) {
-      avatarEl.src = user.photo_url;  // реальная аватарка из Telegram
-    } else {
-      avatarEl.src = 'https://via.placeholder.com/48/FFD700/000?text=' + (user.username?.[0] || 'U');
-    }
+    avatarEl.src = user.photo_url || `https://via.placeholder.com/48/FFD700/000?text=${user.username?.[0]?.toUpperCase() || 'U'}`;
 
-    // Открытие настроек по клику на аву
-    document.getElementById('avatarContainer').onclick = () => {
+    // Открытие настроек ТОЛЬКО по клику на шестерёнку
+    document.getElementById('settingsTrigger').onclick = () => {
       document.getElementById('settingsModal').style.display = 'flex';
     };
 
@@ -172,7 +194,7 @@
       document.getElementById('settingsModal').style.display = 'none';
     }
 
-    // Переводы
+    // Переводы (расширяй по необходимости)
     const translations = {
       ru: {
         settings: "Настройки",
@@ -194,29 +216,41 @@
     function setLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lang', lang);
+      
       document.querySelectorAll('[data-key]').forEach(el => {
         const key = el.dataset.key;
-        if (translations[lang][key]) el.textContent = translations[lang][key];
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
       });
+
       document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
       });
+
+      // Обновляем кнопку подключения, если она уже изменена
+      const connectBtn = document.getElementById('connectWallet');
+      if (connectBtn.disabled) {
+        connectBtn.textContent = translations[lang].connected;
+      } else {
+        connectBtn.textContent = translations[lang].connectWallet;
+      }
+
       document.documentElement.lang = lang;
       closeSettings();
     }
 
-    // Инициализация языка
+    // Инициализация языка при загрузке
     setLanguage(currentLang);
 
-    // Кнопки языка
+    // Обработчики кнопок языка
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.onclick = () => setLanguage(btn.dataset.lang);
-      btn.classList.toggle('active', btn.dataset.lang === currentLang);
     });
 
     // TON Connect (как раньше)
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://твоя-ссылка.netlify.app/tonconnect-manifest.json'  // ← подставь свою
+      manifestUrl: 'https://твоя-ссылка.netlify.app/tonconnect-manifest.json'  // ← замени
     });
 
     const connectButton = document.getElementById('connectWallet');
@@ -229,7 +263,7 @@
         connectButton.disabled = true;
 
         const balanceNano = await tonConnectUI.getBalance();
-        const balanceTon = (balanceNano / 1_000_000_000).toFixed(4);
+        const balanceTon = (Number(balanceNano) / 1_000_000_000).toFixed(4);
         balanceEl.textContent = balanceTon;
       } catch (e) {
         alert('Ошибка: ' + e.message);
