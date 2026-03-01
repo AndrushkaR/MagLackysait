@@ -9,9 +9,8 @@
     .header { background:#161b22; padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #30363d; }
     .avatar-container { position:relative; width:52px; height:52px; }
     .avatar { width:100%; height:100%; border-radius:50%; object-fit:cover; border:3px solid #FFD700; }
-    .settings-badge { position:absolute; bottom:-4px; right:-4px; width:26px; height:26px; background:#161b22; border:3px solid #FFD700; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; transition:0.2s; }
-    .settings-badge:hover { transform:scale(1.2); background:#2d3748; }
-    .logo { font-size:24px; font-weight:bold; color:#FFD700; text-shadow:0 0 10px #FFD70080; flex:1; }
+    .settings-badge { position:absolute; bottom:-4px; right:-4px; width:26px; height:26px; background:#161b22; border:3px solid #FFD700; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; }
+    .logo { font-size:24px; font-weight:bold; color:#FFD700; flex:1; }
     .balance { background:rgba(167,139,250,0.2); padding:8px 14px; border-radius:20px; font-size:15px; cursor:pointer; }
     .balance strong { color:#A78BFA; }
     .connect-btn { background:#FFD700; color:black; padding:14px 24px; border-radius:20px; font-weight:bold; border:none; cursor:pointer; width:90%; margin:16px auto; display:block; font-size:18px; }
@@ -28,15 +27,11 @@
     #settingsModal, #avatarModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
     .modal-content { background:#1f2937; padding:28px; border-radius:16px; width:90%; max-width:360px; text-align:center; border:1px solid #FFD70040; }
     .modal-content h3 { color:#FFD700; margin:0 0 20px; font-size:22px; }
-    .lang-btn, .avatar-option { background:#30363d; color:white; border:none; padding:14px 28px; margin:8px; border-radius:12px; cursor:pointer; font-size:17px; }
-    .avatar-option { padding:0; width:80px; height:80px; border-radius:50%; overflow:hidden; border:3px solid transparent; }
+    .avatar-option { width:80px; height:80px; border-radius:50%; overflow:hidden; border:3px solid transparent; cursor:pointer; }
     .avatar-option img { width:100%; height:100%; object-fit:cover; }
-    .avatar-option:hover { border-color:#FFD700; transform:scale(1.08); }
-    .avatar-option.selected { border-color:#FFD700; box-shadow:0 0 0 4px #FFD70040; }
-    .lang-btn.active { background:#FFD700; color:black; font-weight:bold; }
-    .close-btn, .accept-btn { margin-top:20px; padding:12px 32px; border-radius:12px; cursor:pointer; font-size:16px; font-weight:bold; }
-    .close-btn { background:#FF5555; color:white; }
-    .accept-btn { background:#00ff88; color:#111; }
+    .avatar-option.selected { border-color:#FFD700; }
+    .accept-btn { background:#00ff88; color:#111; padding:14px 40px; border:none; border-radius:30px; font-size:17px; font-weight:bold; margin:15px 5px; }
+    .close-btn { background:#FF5555; color:white; padding:14px 40px; border:none; border-radius:30px; font-size:17px; font-weight:bold; margin:15px 5px; }
   </style>
 </head>
 <body>
@@ -86,7 +81,7 @@
     <div class="nav-item" onclick="window.location.href='rewards.html'">Награды</div>
   </div>
 
-  <!-- Модалка настроек -->
+  <!-- Настройки -->
   <div id="settingsModal">
     <div class="modal-content">
       <h3>Настройки</h3>
@@ -100,16 +95,16 @@
     </div>
   </div>
 
-  <!-- Модалка выбора аватарки -->
+  <!-- Выбор аватарки с кнопкой Принять -->
   <div id="avatarModal">
     <div class="modal-content">
       <h3>Выберите аватарку</h3>
-      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:20px 0;">
-        <div class="avatar-option" onclick="previewAvatar('avatars/avatar1.png')"><img src="avatars/avatar1.png" alt="1"></div>
-        <div class="avatar-option" onclick="previewAvatar('avatars/avatar2.png')"><img src="avatars/avatar2.png" alt="2"></div>
-        <div class="avatar-option" onclick="previewAvatar('avatars/avatar3.png')"><img src="avatars/avatar3.png" alt="3"></div>
-        <div class="avatar-option" onclick="previewAvatar('avatars/avatar4.png')"><img src="avatars/avatar4.png" alt="4"></div>
-        <div class="avatar-option" onclick="previewAvatar('avatars/avatar5.png')"><img src="avatars/avatar5.png" alt="5"></div>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin:25px 0;">
+        <div class="avatar-option" onclick="previewAvatar(this, 'avatars/avatar1.png')"><img src="avatars/avatar1.png" alt=""></div>
+        <div class="avatar-option" onclick="previewAvatar(this, 'avatars/avatar2.png')"><img src="avatars/avatar2.png" alt=""></div>
+        <div class="avatar-option" onclick="previewAvatar(this, 'avatars/avatar3.png')"><img src="avatars/avatar3.png" alt=""></div>
+        <div class="avatar-option" onclick="previewAvatar(this, 'avatars/avatar4.png')"><img src="avatars/avatar4.png" alt=""></div>
+        <div class="avatar-option" onclick="previewAvatar(this, 'avatars/avatar5.png')"><img src="avatars/avatar5.png" alt=""></div>
       </div>
       <button class="accept-btn" onclick="acceptAvatar()">Принять</button>
       <button class="close-btn" onclick="closeAvatarModal()">Отмена</button>
@@ -122,51 +117,31 @@
     tg.expand();
 
     const avatarElement = document.getElementById('userAvatar');
-    const defaultAvatar = 'avatars/avatar1.png';
-    let tempSelected = null;
+    let currentSelection = null;
 
     // Загружаем сохранённую аватарку
-    let savedAvatar = localStorage.getItem('selectedAvatar');
-    if (savedAvatar) {
-      avatarElement.src = savedAvatar;
-    } else {
-      avatarElement.src = defaultAvatar;
-      localStorage.setItem('selectedAvatar', defaultAvatar);
-    }
+    const saved = localStorage.getItem('selectedAvatar');
+    avatarElement.src = saved || 'avatars/avatar1.png';
 
-    function openSettings() {
-      document.getElementById('settingsModal').style.display = 'flex';
-    }
-
-    function closeSettings() {
-      document.getElementById('settingsModal').style.display = 'none';
-    }
-
+    function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
+    function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
     function openAvatarModal() {
       closeSettings();
       document.getElementById('avatarModal').style.display = 'flex';
-      tempSelected = localStorage.getItem('selectedAvatar') || defaultAvatar;
-      // Подсвечиваем текущую
-      document.querySelectorAll('.avatar-option').forEach(opt => {
-        opt.classList.toggle('selected', opt.onclick.toString().includes(tempSelected));
-      });
+      currentSelection = null;
     }
+    function closeAvatarModal() { document.getElementById('avatarModal').style.display = 'none'; }
 
-    function closeAvatarModal() {
-      document.getElementById('avatarModal').style.display = 'none';
-      tempSelected = null;
-    }
-
-    function previewAvatar(src) {
-      tempSelected = src;
-      document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
+    function previewAvatar(el, src) {
+      currentSelection = src;
+      document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
     }
 
     function acceptAvatar() {
-      if (tempSelected) {
-        avatarElement.src = tempSelected;
-        localStorage.setItem('selectedAvatar', tempSelected);
+      if (currentSelection) {
+        avatarElement.src = currentSelection;
+        localStorage.setItem('selectedAvatar', currentSelection);
       }
       closeAvatarModal();
     }
