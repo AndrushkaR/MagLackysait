@@ -137,26 +137,6 @@
       localStorage.setItem('selectedAvatar', src);
       closeAvatarModal();
     }
-
-    // TON Connect (если нужно — раскомментируй)
-    /*
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://your-site/tonconnect-manifest.json'
-    });
-    const connectButton = document.getElementById('connectWallet');
-    const balanceEl = document.getElementById('tonBalance');
-    connectButton.addEventListener('click', async () => {
-      try {
-        await tonConnectUI.connectWallet();
-        connectButton.textContent = 'Кошелёк подключён!';
-        connectButton.disabled = true;
-        const balanceNano = await tonConnectUI.getBalance();
-        balanceEl.textContent = (Number(balanceNano) / 1_000_000_000).toFixed(3);
-      } catch (e) {
-        alert('Ошибка: ' + e.message);
-      }
-    });
-    */
   </script>
 </body>
 </html>
