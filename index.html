@@ -82,7 +82,7 @@
     <div class="nav-item" onclick="window.location.href='rewards.html'">Награды</div>
   </div>
 
-  <!-- Красивые настройки (как на скрине) -->
+  <!-- Настройки (точно как на твоём скрине) -->
   <div id="settingsModal">
     <div class="modal-content">
       <h3>Настройки</h3>
@@ -96,7 +96,7 @@
     </div>
   </div>
 
-  <!-- Выбор аватарки (прямое изменение при клике) -->
+  <!-- Выбор аватарки -->
   <div id="avatarModal">
     <div class="modal-content">
       <h3>Выберите аватарку</h3>
@@ -118,25 +118,25 @@
 
     const avatarElement = document.getElementById('userAvatar');
 
-    // По умолчанию — пустой placeholder
+    // По умолчанию — пустой кружок
     avatarElement.src = 'https://via.placeholder.com/52/1f2937/FFD700?text=?';
 
-    // Если уже выбирал раньше — загружаем
+    // Если уже выбирал раньше — ставим её
     const saved = localStorage.getItem('selectedAvatar');
     if (saved) avatarElement.src = saved;
 
     function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
     function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-    function openAvatarModal() {
-      closeSettings();
-      document.getElementById('avatarModal').style.display = 'flex';
+    function openAvatarModal() { 
+      closeSettings(); 
+      document.getElementById('avatarModal').style.display = 'flex'; 
     }
     function closeAvatarModal() { document.getElementById('avatarModal').style.display = 'none'; }
 
     function changeAvatar(src) {
-      avatarElement.src = src;
-      localStorage.setItem('selectedAvatar', src);
-      closeAvatarModal();
+      avatarElement.src = src;           // сразу ставим в шапку
+      localStorage.setItem('selectedAvatar', src);  // сохраняем навсегда
+      closeAvatarModal();                // закрываем модалку
     }
   </script>
 </body>
